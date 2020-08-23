@@ -15,7 +15,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "ora": "^5.0.0",
     "tinify": "^1.6.0-beta.2"
