@@ -11,6 +11,14 @@ Using [tinify](https://www.npmjs.com/package/tinify) which is used by [TinyPNG](
 ```sh
 npx tinify-client key=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
 ```
+or
+```sh
+npm install tinify-client --global
+```
+
+```sh
+tinify-client key=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
+```
 
 ## Documentation
 
@@ -34,6 +42,14 @@ More parameters:
 
 ```sh
 npx tinify-client key=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
+```
+或
+```sh
+npm install tinify-client --global
+```
+
+```sh
+tinify-client key=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
 ```
 
 ## 文档
