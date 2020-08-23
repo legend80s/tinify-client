@@ -238,7 +238,9 @@ main();
  */
 async function resolveFilenameFromEndpoint(endpoint) {
   if (!isRemoteFile(endpoint)) {
-    return endpoint;
+    // a.png => a-compressed.png
+    // a => a-compressed
+    return endpoint.replace(/(\.\w+)?$/, (m, $1) => `-compressed${$1 || ''}`);
   }
 
   const filename = endpoint.split('/').pop().replace(/\?.*/, '');

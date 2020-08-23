@@ -8,9 +8,8 @@
 
 ## Usage
 
-
 ```sh
-npx tinify key=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG
+npx tinify key=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
 ```
 
 ## Documentation
@@ -47,4 +46,3 @@ npx tinify key=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_
 - max-count: 最大压缩次数，默认 15 次。
 - version: 显示该工具的版本号。
 - verbose: 显示每一次压缩的日志。
-
