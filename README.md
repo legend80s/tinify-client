@@ -3,8 +3,8 @@
 <p align="center"><img src="https://tinypng.com/images/panda-happy.png" width="30%" /></p>
 
 > Compress your images not only intelligently but also to the EXTREME!
->
-> -- using [tinify](https://www.npmjs.com/package/tinify) which is used by [TinyPNG](https://tinypng.com/) and [TinyJPG](https://tinyjpg.com/). Read more at [http://tinify.com](http://tinify.com/).
+
+Using [tinify](https://www.npmjs.com/package/tinify) which is used by [TinyPNG](https://tinypng.com/) and [TinyJPG](https://tinyjpg.com/). Read more at [http://tinify.com](http://tinify.com/).
 
 ## Usage
 
