@@ -3,6 +3,7 @@ const ora = require('ora');
 
 const { getImageSize, isRemoteFile } = require('./getImageSize');
 const { getRequest } = require('./request');
+const { version } = require('./package.json');
 
 // console.log('process.argv:', process.argv);
 
@@ -16,8 +17,10 @@ const params = new Map(process.argv.slice(2).map(entry => {
 }));
 
 const verbose = params.get('verbose') === 'true' || params.get('verbose') === '';
+const showVersion = params.get('version') === 'true' || params.get('version') === '';
 
 verbose && console.log('params:', params);
+showVersion && console.log(' tinify client', version, '\n');
 
 const GREEN = '\x1b[0;32m';
 const YELLOW = '\x1b[1;33m';
