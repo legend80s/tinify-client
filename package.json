@@ -1,8 +1,15 @@
 {
   "name": "tinify-client",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Compress your images not only intelligently but also to the EXTREME!",
+  "files": [
+    "index.js",
+    "getImageSize.js",
+    "request.js"
+  ],
+  "bin": {
+    "tinify": "index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
