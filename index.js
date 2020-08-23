@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const tinify = require("tinify");
 const ora = require('ora');
 
