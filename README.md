@@ -9,7 +9,7 @@ Using [tinify](https://www.npmjs.com/package/tinify) which is used by [TinyPNG](
 ## Usage
 
 ```sh
-npx tinify key=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
+npx tinify-client key=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
 ```
 
 ## Documentation
@@ -33,7 +33,7 @@ More parameters:
 ## 用法
 
 ```sh
-npx tinify key=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
+npx tinify-client key=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
 ```
 
 ## 文档
@@ -46,3 +46,9 @@ npx tinify key=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_
 - max-count: 最大压缩次数，默认 15 次。
 - version: 显示该工具的版本号。
 - verbose: 显示每一次压缩的日志。
+
+## Develop
+
+```sh
+node index.js key=YOUR_API_KEY src=https://tinypng.com/images/panda-happy.png
+```

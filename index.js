@@ -15,7 +15,7 @@ const { version } = require('./package.json');
 const params = new Map(process.argv.slice(2).map(entry => {
   const splits = entry.match(/([\w\-]+)=?(.*)/);
 
-  return [splits[1].replace(/-+/, '').trim(), splits[2].trim()]
+  return [splits[1].replace(/^-+/, '').trim(), splits[2].trim()]
 }));
 
 const verbose = params.get('verbose') === 'true' || params.get('verbose') === '';
@@ -169,19 +169,19 @@ async function main() {
 
     return [
       `The final compressed image is`,
-      `${output},`,
+      `${GREEN}${output}${EOS},`,
 
-      `before ${firstTurn[0]} Bytes,`,
-      `after ${lastTurn[1]} Bytes,`,
+      `${YELLOW}before ${GREEN}${firstTurn[0]} ${YELLOW}Bytes,`,
+      `after ${GREEN}${lastTurn[1]} ${YELLOW}Bytes,`,
 
-      getTotalBytesOff(sizes),
+      `${GREEN}${getTotalBytesOff(sizes)}${YELLOW}`,
       'Bytes',
-      `(${getTotalPercentageOff(sizes)}%)`,
+      `(${GREEN}${getTotalPercentageOff(sizes)}%${YELLOW})`,
       'totally off in',
       sizes.length,
       'turn(s).',
 
-      `Delta in the last turn is ${lastTurn[1] - lastTurn[0]}.`,
+      `Delta in the last turn is ${lastTurn[0] - lastTurn[1]}.`,
     ].join(' ')
   }
 
@@ -301,7 +301,9 @@ function getTotalBytesOff(sizes) {
  * @param {number} after
  */
 function getPercentageOff(before, after) {
-  return ((before - after) / before).toFixed(2) * 100;
+  const diff = before - after;
+
+  return (diff / before * 100).toFixed(2);
 }
 
 /**
