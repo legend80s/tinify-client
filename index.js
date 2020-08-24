@@ -30,14 +30,25 @@ const RED = '\x1b[0;31m';
 const EOS = '\x1b[0m';
 
 async function main() {
-  const key = params.get('key');
+  const keyFromCli = params.get('key');
+  const TINIFY_KEY = process.env.TINIFY_KEY;
+  const key = keyFromCli || TINIFY_KEY;
 
-  if (!key) {
-    console.error(YELLOW, 'key required.\n example: $ node index key=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG output=OPTIMIZED_IMG_PATH');
+  if (key) {
+    console.error(YELLOW, 'key required. Get your key at', `${GREEN}https://tinypng.com/developers`, EOS);
 
-    console.log();
-    console.log(' Get your key at', GREEN, 'https://tinypng.com/developers', EOS);
-    console.log();
+    console.log(YELLOW);
+
+    console.log(` You can set key in the CLI params: $ ${GREEN}tinify-client key=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG output=OPTIMIZED_IMG_PATH`);
+    console.log(YELLOW);
+    console.log(` Or append \`${GREEN}export TINIFY_KEY=YOUR_API_KEY\`${YELLOW} to your profile (~/.zshrc or ~/.bash_profile, etc.), then:`, '\n');
+
+    console.log(' ```sh');
+    console.log(`${GREEN} source ~/.zshrc`);
+    console.log(' tinify-client src=IMG_URL_OR_LOCAL_IMG output=OPTIMIZED_IMG_PATH', YELLOW);
+    console.log(' ```');
+
+    console.log(EOS);
 
     return;
   }
@@ -46,7 +57,7 @@ async function main() {
 
   if (!src) {
     console.log(YELLOW);
-    console.error('src required.\nexample: node index src=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG output=OPTIMIZED_IMG_PATH');
+    console.error('src required.\nexample: tinify-client src=IMG_URL_OR_LOCAL_IMG output=OPTIMIZED_IMG_PATH');
     console.log(EOS);
 
     return;
@@ -54,7 +65,7 @@ async function main() {
 
   // if (!/^https?:\/\/.+/.test(src)) {
   //   console.log();
-  //   console.error('src must be a cdn address, starts with http or https.\nexample: node index src=YOUR_API_KEY src=https://tinypng.com/images/panda-chewing-2x.png src=IMG_URL_OR_LOCAL_IMG output=OPTIMIZED_IMG_PATH');
+  //   console.error('src must be a cdn address, starts with http or https.\nexample: tinify-client src=https://tinypng.com/images/panda-chewing-2x.png src=IMG_URL_OR_LOCAL_IMG output=OPTIMIZED_IMG_PATH');
   //   console.log();
 
   //   return;
