@@ -10,7 +10,9 @@ Compress using [tinify](https://www.npmjs.com/package/tinify) which is used by [
 
 ### 1. Configure the key
 
-You can set the key in the CLI params: `$ tinify-client key=YOUR_API_KEY`, or append `export TINIFY_KEY=YOUR_API_KEY` to your profile (~/.zshrc or ~/.bash_profile, etc.). Don't forget to execute this line below to make your settings active.
+Get your key at https://tinypng.com/developers.
+
+Then set the key in the CLI params: `$ tinify-client key=YOUR_API_KEY`, or append `export TINIFY_KEY=YOUR_API_KEY` to your profile (~/.zshrc or ~/.bash_profile, etc.). Don't forget to execute this line below to make your settings active.
 
 ```sh
 source ~/.zshrc
