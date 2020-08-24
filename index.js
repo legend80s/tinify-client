@@ -119,9 +119,7 @@ async function main() {
 
         spinner.succeed('Compressed');
 
-        console.log();
-        console.log(YELLOW, summarize(output, sizes), EOS);
-        console.log();
+        report(output, sizes);
 
         return;
       }
@@ -145,9 +143,7 @@ async function main() {
       );
     }
 
-    console.log();
-    console.log(YELLOW, summarize(output, sizes), EOS);
-    console.log();
+    report(output, sizes);
 
     return;
   } catch (error) {
@@ -163,27 +159,7 @@ async function main() {
     console.log();
   }
 
-  function summarize(output, sizes) {
-    const firstTurn = sizes[0];
-    const lastTurn = sizes[sizes.length - 1];
 
-    return [
-      `The final compressed image is`,
-      `${GREEN}${output}${EOS},`,
-
-      `${YELLOW}before ${GREEN}${firstTurn[0]} ${YELLOW}Bytes,`,
-      `after ${GREEN}${lastTurn[1]} ${YELLOW}Bytes,`,
-
-      `${GREEN}${getTotalBytesOff(sizes)}${YELLOW}`,
-      'Bytes',
-      `(${GREEN}${getTotalPercentageOff(sizes)}%${YELLOW})`,
-      'totally off in',
-      sizes.length,
-      'turn(s).',
-
-      `Delta in the last turn is ${lastTurn[0] - lastTurn[1]}.`,
-    ].join(' ')
-  }
 
   async function compress(src, dest) {
     verbose && console.time(GREEN + ' compress ' + src + ' costs' + EOS);
@@ -315,4 +291,32 @@ function getTotalPercentageOff(sizes) {
   const after = sizes[sizes.length - 1][1];
 
   return getPercentageOff(before, after);
+}
+
+function report(dest, sizes) {
+  console.log();
+  console.log(YELLOW, summarize(dest, sizes), EOS);
+  console.log();
+}
+
+function summarize(dest, sizes) {
+  const firstTurn = sizes[0];
+  const lastTurn = sizes[sizes.length - 1];
+
+  return [
+    `The final compressed image is`,
+    `${GREEN}${dest}${EOS},`,
+
+    `${YELLOW}before ${GREEN}${firstTurn[0]} ${YELLOW}Bytes,`,
+    `after ${GREEN}${lastTurn[1]} ${YELLOW}Bytes,`,
+
+    `${GREEN}${getTotalBytesOff(sizes)}${YELLOW}`,
+    'Bytes',
+    `(${GREEN}${getTotalPercentageOff(sizes)}%${YELLOW})`,
+    'totally off in',
+    sizes.length,
+    'turn(s).',
+
+    `Delta in the last turn is ${lastTurn[0] - lastTurn[1]}.`,
+  ].join(' ')
 }
