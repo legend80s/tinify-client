@@ -1,7 +1,7 @@
 {
   "name": "tinify-client",
   "version": "1.0.3",
-  "description": "Compress your images not only intelligently but also to the EXTREME!",
+  "description": "Compress your images not only intelligently but also to the EXTREME using tinify!",
   "files": [
     "index.js",
     "getImageSize.js",
@@ -14,7 +14,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "tinify",
+    "compress",
+    "optimize",
+    "tinypng",
+    "tinyjpg",
+    "picture",
+    "image"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
