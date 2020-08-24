@@ -8,7 +8,7 @@ Compress using [tinify](https://www.npmjs.com/package/tinify) which is used by [
 
 ## Usage
 
-### Configure the key
+### 1. Configure the key
 
 You can set the key in the CLI params: `$ tinify-client key=YOUR_API_KEY`, or append `export TINIFY_KEY=YOUR_API_KEY` to your profile (~/.zshrc or ~/.bash_profile, etc.). Don't forget to execute this line below to make your settings active.
 
@@ -16,7 +16,7 @@ You can set the key in the CLI params: `$ tinify-client key=YOUR_API_KEY`, or ap
 source ~/.zshrc
 ```
 
-### Compress
+### 2. Compress
 
 ```sh
 npx tinify-client src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
@@ -52,7 +52,7 @@ More parameters:
 
 ## 用法
 
-### 设置 Key
+### 1. 设置 Key
 
 Key 可从 https://tinypng.com/developers 免费获取，获取过程很简单不要有心理负担。
 
@@ -72,7 +72,7 @@ tinify-client key=YOUR_API_KEY
 source ~/.zshrc
 ```
 
-### 开始压缩
+### 2. 开始压缩
 
 ```sh
 npx tinify-client src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
