@@ -10,16 +10,19 @@ Compress using [tinify](https://www.npmjs.com/package/tinify) which is used by [
 
 ### 1. Configure the key
 
-Get your key at https://tinypng.com/developers then set the key in the CLI params: `$ tinify-client key=YOUR_API_KEY`, or append `export TINIFY_KEY=YOUR_API_KEY` to your profile (~/.zshrc or ~/.bash_profile, etc.). Don't forget to execute this line below to make your settings active.
+Get your key at https://tinypng.com/developers then set the key in the CLI params when compressing: `$ tinify-client key=YOUR_API_KEY`。
+
+Or append `export TINIFY_KEY=YOUR_API_KEY` to your profile (~/.zshrc or ~/.bash_profile, etc.). Don't forget to execute this line below to make your settings active.
 
 ```sh
+echo TINIFY_KEY=YOUR_API_KEY >> ~/.zshrc
 source ~/.zshrc
 ```
 
 ### 2. Compress
 
 ```sh
-npx tinify-client src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
+npx tinify-client src=IMG_URL_OR_LOCAL_IMG
 ```
 
 or
@@ -69,21 +72,21 @@ tinify-client key=YOUR_API_KEY
 将 `export TINIFY_KEY=YOUR_API_KEY` 添加到 profile 文件（~/.zshrc 或 ~/.bash_profile, etc.）最后一行，别忘了执行
 
 ```sh
+echo TINIFY_KEY=YOUR_API_KEY >> ~/.zshrc
 source ~/.zshrc
 ```
 
 ### 2. 开始压缩
 
 ```sh
-npx tinify-client src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
+npx tinify-client src=IMG_URL_OR_LOCAL_IMG
 ```
 
 或
 
 ```sh
 npm install tinify-client@latest --global
-
-tinify-client src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
+tinify-client src=IMG_URL_OR_LOCAL_IMG
 ```
 
 ## 文档
