@@ -47,7 +47,7 @@ More parameters:
 
 ---
 
-**中文版文档**
+## 中文版文档
 
 > 用 https://tinypng.com/ 使用的压缩技术将图片压缩到**极致**。
 >
