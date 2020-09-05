@@ -1,6 +1,6 @@
 {
   "name": "tinify-client",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Compress your images not only intelligently but also to the EXTREME using tinify!",
   "files": [
     "index.js",
