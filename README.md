@@ -1,5 +1,14 @@
 # tinify-client
 
+<p>
+  <a href="https://www.npmjs.com/package/tinify-client">
+    <img src="https://img.shields.io/npm/v/tinify-client.svg" alt="npm version" />
+  </a>
+  <a href="https://www.npmjs.com/package/tinify-client">
+    <img src="https://img.shields.io/npm/dm/tinify-client.svg" alt="npm downloads monthly" />
+  </a>
+</p>
+
 <p align="center"><img src="https://tinypng.com/images/panda-happy.png" width="30%" /></p>
 
 > Compress your images not only intelligently but also to the EXTREME!
