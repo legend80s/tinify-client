@@ -6,6 +6,9 @@ const ora = require('ora');
 const { getImageSize, isRemoteFile } = require('./getImageSize');
 const { getRequest } = require('./request');
 const { version } = require('./package.json');
+const { EOS, GREEN, YELLOW, RED } = require('./constants/colors');
+const { i18n } = require('./i18n');
+const { getPercentageOff } = require('./utils/number');
 
 // console.log('process.argv:', process.argv);
 
@@ -24,10 +27,7 @@ const showVersion = params.get('version') === 'true' || params.get('version') ==
 verbose && console.log('params:', params);
 showVersion && console.log(' tinify client', version, '\n');
 
-const GREEN = '\x1b[0;32m';
-const YELLOW = '\x1b[1;33m';
-const RED = '\x1b[0;31m';
-const EOS = '\x1b[0m';
+const dictionary = i18n();
 
 async function main() {
   const keyFromCli = params.get('key');
@@ -74,9 +74,9 @@ async function main() {
   let output = params.get('output');
 
   console.log();
-  const spinner = ora('Compressing...').start();
+  const spinner = ora(`${dictionary.compressing}...`).start();
 
-  console.time(GREEN + ' Compress ' + src + ' total costs' + EOS);
+  console.time(GREEN + ` ${dictionary.genTotalTimeCostsTips(src)}` + EOS);
 
   if (!output) {
     verbose && console.time(GREEN + ' resolveFilenameFromEndpoint ' + src + ' costs' + EOS);
@@ -128,7 +128,7 @@ async function main() {
           console.log(GREEN, `${diff} Bytes reduced in the last turn and it is less than the delta ${DELTA} Bytes. Compressing is ready to abort.`, EOS);
         }
 
-        spinner.succeed('Compressed');
+        spinner.succeed(dictionary.compressed);
 
         report(output, sizes);
 
@@ -142,7 +142,7 @@ async function main() {
       // }
     }
 
-    spinner.succeed('Compressed');
+    spinner.succeed(dictionary.compressed);
 
     if (verbose) {
       console.log();
@@ -158,7 +158,7 @@ async function main() {
 
     return;
   } catch (error) {
-    spinner.fail('Compressed failed');
+    spinner.fail(dictionary.compressFailed);
 
     console.error(RED, 'compress failed:', error);
 
@@ -166,11 +166,9 @@ async function main() {
   } finally {
     verbose && console.log('sizes:', sizes);
     // console.log('tmpFiles:', tmpFiles);
-    console.timeEnd(GREEN + ' Compress ' + src + ' total costs' + EOS);
+    console.timeEnd(GREEN + ` ${dictionary.genTotalTimeCostsTips(src)}` + EOS);
     console.log();
   }
-
-
 
   async function compress(src, dest) {
     verbose && console.time(GREEN + ' compress ' + src + ' costs' + EOS);
@@ -284,17 +282,6 @@ function getTotalBytesOff(sizes) {
 
 /**
  *
- * @param {number} before
- * @param {number} after
- */
-function getPercentageOff(before, after) {
-  const diff = before - after;
-
-  return (diff / before * 100).toFixed(2);
-}
-
-/**
- *
  * @param {[number, number][]} sizes
  */
 function getTotalPercentageOff(sizes) {
@@ -314,20 +301,11 @@ function summarize(dest, sizes) {
   const firstTurn = sizes[0];
   const lastTurn = sizes[sizes.length - 1];
 
-  return [
-    `The final compressed image is`,
-    `${GREEN}${dest}${EOS},`,
-
-    `${YELLOW}before ${GREEN}${firstTurn[0]} ${YELLOW}Bytes,`,
-    `after ${GREEN}${lastTurn[1]} ${YELLOW}Bytes,`,
-
-    `${GREEN}${getTotalBytesOff(sizes)}${YELLOW}`,
-    'Bytes',
-    `(${GREEN}${getTotalPercentageOff(sizes)}%${YELLOW})`,
-    'totally off in',
-    sizes.length,
-    'turn(s).',
-
-    `Delta in the last turn is ${lastTurn[0] - lastTurn[1]}.`,
-  ].join(' ')
+  return dictionary.summarize({
+    dest,
+    beforeSizeInByte: firstTurn[0],
+    afterSizeInByte: lastTurn[1],
+    nTurns: sizes.length,
+    lastTurnDelta: lastTurn[0] - lastTurn[1],
+  })
 }

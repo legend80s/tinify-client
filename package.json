@@ -5,14 +5,17 @@
   "files": [
     "index.js",
     "getImageSize.js",
-    "request.js"
+    "request.js",
+    "constants/*",
+    "i18n/*",
+    "utils/*"
   ],
   "bin": {
     "tinify-client": "./index.js",
     "tinify": "./index.js"
   },
   "scripts": {
-    "test": "node index.js src=https://tinypng.com/images/panda-happy.png"
+    "test": "node index.js src=https://tinypng.com/images/panda-happy.png max-count=1"
   },
   "keywords": [
     "tinify",
