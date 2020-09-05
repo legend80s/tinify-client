@@ -10,14 +10,15 @@ Compress using [tinify](https://www.npmjs.com/package/tinify) which is used by [
 
 ### 1. Configure the key
 
-Get your key at https://tinypng.com/developers then set the key in the CLI params when compressing: `$ tinify-client key=YOUR_API_KEY`。
+1. Get your key at https://tinypng.com/developers.
+2. then set the key in the CLI params when compressing: `$ tinify-client key=YOUR_API_KEY`。
 
-Or append `export TINIFY_KEY=YOUR_API_KEY` to your profile (~/.zshrc or ~/.bash_profile, etc.). Don't forget to execute this line below to make your settings active.
+3. Or append `export TINIFY_KEY=YOUR_API_KEY` to your profile (~/.zshrc or ~/.bash_profile, etc.). Don't forget to execute this line below to make your settings active.
 
-```sh
-echo TINIFY_KEY=YOUR_API_KEY >> ~/.zshrc
-source ~/.zshrc
-```
+   ```sh
+   echo TINIFY_KEY=YOUR_API_KEY >> ~/.zshrc
+   source ~/.zshrc
+   ```
 
 ### 2. Compress
 
@@ -103,5 +104,5 @@ tinify-client src=IMG_URL_OR_LOCAL_IMG
 ## Develop
 
 ```sh
-node index.js key=YOUR_API_KEY src=https://tinypng.com/images/panda-happy.png
+LANG=zh-CN node index.js src=https://tinypng.com/images/panda-happy.png max-count=1
 ```
