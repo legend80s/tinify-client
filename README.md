@@ -15,6 +15,17 @@
 
 Compress using [tinify](https://www.npmjs.com/package/tinify) which is used by [TinyPNG](https://tinypng.com/) and [TinyJPG](https://tinyjpg.com/). Read more at [http://tinify.com](http://tinify.com/).
 
+- [Usage](#usage)
+  - [1. Configure the key](#1-configure-the-key)
+  - [2. Compress](#2-compress)
+- [Documentation](#documentation)
+- [中文版文档](#中文版文档)
+  - [用法](#用法)
+    - [1. 设置 Key](#1-设置-key)
+    - [2. 开始压缩](#2-开始压缩)
+  - [文档](#文档)
+- [Development](#development)
+
 ## Usage
 
 ### 1. Configure the key
@@ -63,9 +74,9 @@ More parameters:
 >
 > 解决需要手动将一张图片拖放到 tinypng 十几次才能达到极致压缩的难题
 
-## 用法
+### 用法
 
-### 1. 设置 Key
+#### 1. 设置 Key
 
 Key 可从 https://tinypng.com/developers 免费获取，获取过程很简单不要有心理负担。
 
@@ -86,7 +97,7 @@ echo TINIFY_KEY=YOUR_API_KEY >> ~/.zshrc
 source ~/.zshrc
 ```
 
-### 2. 开始压缩
+#### 2. 开始压缩
 
 ```sh
 npx tinify-client src=IMG_URL_OR_LOCAL_IMG
@@ -99,7 +110,7 @@ npm install tinify-client@latest --global
 tinify-client src=IMG_URL_OR_LOCAL_IMG
 ```
 
-## 文档
+### 文档
 
 参数介绍：
 
@@ -110,7 +121,7 @@ tinify-client src=IMG_URL_OR_LOCAL_IMG
 - version: 显示该工具的版本号。
 - verbose: 显示每一次压缩的日志。
 
-## Develop
+## Development
 
 ```sh
 LANG=zh-CN node index.js src=https://tinypng.com/images/panda-happy.png max-count=1
