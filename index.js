@@ -74,7 +74,15 @@ async function main() {
   let output = params.get('output');
 
   console.log();
-  const spinner = ora(`${dictionary.compressing}...`).start();
+  let milliseconds = 0;
+  const spinner = ora(`${dictionary.compressing}... ${timeToReadable(milliseconds)}`).start();
+  const GAP = 100;
+
+  const timer = setInterval(() => {
+    milliseconds += GAP;
+
+    spinner.text = `${dictionary.compressing}... ${timeToReadable(milliseconds)}`;
+  }, 1 * GAP);
 
   console.time(GREEN + ` ${dictionary.genTotalTimeCostsTips(src)}` + EOS);
 
@@ -128,7 +136,7 @@ async function main() {
           console.log(GREEN, `${diff} Bytes reduced in the last turn and it is less than the delta ${DELTA} Bytes. Compressing is ready to abort.`, EOS);
         }
 
-        spinner.succeed(dictionary.compressed);
+        spinner.succeed(dictionary.compressed + ` ${timeToReadable(milliseconds)}`);
 
         report(output, sizes);
 
@@ -142,7 +150,7 @@ async function main() {
       // }
     }
 
-    spinner.succeed(dictionary.compressed);
+    spinner.succeed(dictionary.compressed + ` ${timeToReadable(milliseconds)}`);
 
     if (verbose) {
       console.log();
@@ -164,10 +172,14 @@ async function main() {
 
     return;
   } finally {
-    verbose && console.log('sizes:', sizes);
-    // console.log('tmpFiles:', tmpFiles);
-    console.timeEnd(GREEN + ` ${dictionary.genTotalTimeCostsTips(src)}` + EOS);
-    console.log();
+    clearInterval(timer);
+
+    if (verbose) {
+      console.log('sizes:', sizes);
+      // console.log('tmpFiles:', tmpFiles);
+      console.timeEnd(GREEN + ` ${dictionary.genTotalTimeCostsTips(src)}` + EOS);
+      console.log();
+    }
   }
 
   async function compress(src, dest) {
@@ -269,28 +281,6 @@ async function resolveFilenameFromEndpoint(endpoint) {
   });
 }
 
-/**
- *
- * @param {[number, number][]} sizes
- */
-function getTotalBytesOff(sizes) {
-  const first = sizes[0];
-  const last = sizes[sizes.length - 1];
-
-  return first[0] - last[1];
-}
-
-/**
- *
- * @param {[number, number][]} sizes
- */
-function getTotalPercentageOff(sizes) {
-  const before = sizes[0][0];
-  const after = sizes[sizes.length - 1][1];
-
-  return getPercentageOff(before, after);
-}
-
 function report(dest, sizes) {
   console.log();
   console.log(YELLOW, summarize(dest, sizes), EOS);
@@ -308,4 +298,10 @@ function summarize(dest, sizes) {
     nTurns: sizes.length,
     lastTurnDelta: lastTurn[0] - lastTurn[1],
   })
+}
+
+function timeToReadable(milliseconds) {
+  const seconds = String(milliseconds / 1000);
+
+  return seconds.includes('.') ?  `${seconds}s` : `${seconds}.0s`;
 }
