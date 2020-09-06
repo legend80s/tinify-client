@@ -1,4 +1,4 @@
-const { getPercentageOff } = require('../utils/number');
+const { getPercentageOff, toReadableSize } = require('../utils/number');
 const { GREEN, EOS, YELLOW } = require('../constants/colors');
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
     const totalBytesOff = beforeSizeInByte - afterSizeInByte;
     const totalPercentageOff = getPercentageOff(beforeSizeInByte, afterSizeInByte);
 
-    return `压缩后的图片位于 ${GREEN}${dest}${EOS}，${YELLOW}压缩前 ${GREEN}${beforeSizeInByte} ${YELLOW}字节, 压缩后 ${GREEN}${afterSizeInByte} ${YELLOW}字节, 经过 ${nTurns} 轮压缩，共压缩 ${GREEN}${totalBytesOff} ${YELLOW}字节，压缩率 ${GREEN}${totalPercentageOff}${YELLOW}。最后一轮压缩相差 ${lastTurnDelta} 字节`
+    return `压缩后的图片位于 ${GREEN}${dest}${EOS}，${YELLOW}压缩前 ${GREEN}${toReadableSize(beforeSizeInByte)}${YELLOW}，压缩后 ${GREEN}${toReadableSize(afterSizeInByte)}${YELLOW}\n 经过 ${nTurns} 轮压缩，共压缩 ${GREEN}${toReadableSize(totalBytesOff)}${YELLOW}，压缩率 ${GREEN}${totalPercentageOff}${YELLOW}\n 最后一轮压缩相差 ${GREEN}${toReadableSize(lastTurnDelta)}${EOS}`
   },
 
   genTotalTimeCostsTips(src) {
