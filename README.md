@@ -69,10 +69,10 @@ tinify-client src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
 More parameters:
 
 - output: the final compressed img file location.
-
 - max-count: Set the max compressing times other than the default 15.
 - version: Show the version.
 - verbose: Show more information about each compressing turn.
+- no-base64: Not output the base64 of the compressed image. base64 encoded by default;
 
 ---
 
@@ -130,6 +130,7 @@ tinify-client src=IMG_URL_OR_LOCAL_IMG
 - max-count: 最大压缩次数，默认 15 次。
 - version: 显示该工具的版本号。
 - verbose: 显示每一次压缩的日志。
+- no-base64: 不显示压缩图片的 base64。默认显示
 
 ## Development
 
