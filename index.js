@@ -42,6 +42,7 @@ const srcList = process.argv
   .filter(not(isCmdArg))
 
 const verbose = params.get('verbose') === 'true' || params.get('verbose') === '';
+const noBase64 = params.get('no-base64') === 'true' || params.get('no-base64') === '';
 
 const versionArgNames = ['version', 'v']
 const showVersion = versionArgNames.some(name =>
@@ -288,6 +289,10 @@ async function report(dest, sizes) {
   console.log();
   console.log(YELLOW, summarize(dest, sizes), EOS);
   console.log();
+
+  if (noBase64) {
+    return;
+  }
 
   const base64 = await imageToBase64(dest);
 
