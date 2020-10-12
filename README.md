@@ -130,7 +130,7 @@ tinify-client src=IMG_URL_OR_LOCAL_IMG
 - max-count: 最大压缩次数，默认 15 次。
 - version: 显示该工具的版本号。
 - verbose: 显示每一次压缩的日志。
-- no-base64: 不显示压缩图片的 base64。默认显示
+- no-base64: 不显示压缩图片的 base64。默认显示。
 
 ## Development
 
