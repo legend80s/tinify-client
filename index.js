@@ -3,8 +3,8 @@
 const tinify = require("tinify");
 const ora = require('ora');
 
-const { getImageSize, isRemoteFile } = require('./getImageSize');
-const { getRequest } = require('./request');
+const { getImageSize, isRemoteFile, imageToBase64 } = require('./utils/image');
+const { resolveExtFromRemote } = require('./utils/image');
 const { version } = require('./package.json');
 const { EOS, GREEN, YELLOW, RED } = require('./constants/colors');
 const { i18n } = require('./i18n');
@@ -268,49 +268,27 @@ async function resolveFilenameFromEndpoint(endpoint) {
     return endpoint.replace(/(\.\w+)?$/, (m, $1) => `-compressed${$1 || ''}`);
   }
 
-  const filename = endpoint.split('/').pop().replace(/\?.*/, '');
+  const filename = endpoint.split('/').pop().replace(/\?.*/, '') || endpoint;
 
   if (/\.\w+$/.test(filename)) {
     return filename;
   }
 
-  return new Promise(resolve => {
-    const req = getRequest(endpoint)
-      .get(endpoint, (resp) => {
-        resp.on('readable', () => {
-          const { headers } = resp;
+  const ext = await resolveExtFromRemote(endpoint);
 
-          // console.log('resp.headers:', resp.headers['content-type']);
+  if (ext) {
+    return `${filename}.${ext}`
+  }
 
-          let ext = '';
-
-          if (headers['content-type']) {
-            ext = headers['content-type'].split('/').pop();
-          }
-
-          resolve(filename && ext ? `${filename}.${ext}` : endpoint);
-
-          req.abort();
-        })
-      })
-      .on('error', (error) => {
-        console.error('HEAD', endpoint, 'failed', error);
-
-        resolve(filename);
-      })
-      .on('timeout', (error) => {
-        console.error('HEAD', endpoint, 'timeout:', error);
-
-        resolve(filename);
-        req.abort()
-      })
-  });
+  return filename;
 }
 
-function report(dest, sizes) {
+async function report(dest, sizes) {
   console.log();
   console.log(YELLOW, summarize(dest, sizes), EOS);
   console.log();
+
+  console.log(await imageToBase64(dest));
 }
 
 function summarize(dest, sizes) {

@@ -4,8 +4,6 @@
   "description": "Compress your images not only intelligently but also to the EXTREME using tinify!",
   "files": [
     "index.js",
-    "getImageSize.js",
-    "request.js",
     "constants/*",
     "i18n/*",
     "utils/*"
@@ -15,7 +13,7 @@
     "tinify": "./index.js"
   },
   "scripts": {
-    "test": "node index.js src=https://tinypng.com/images/panda-happy.png max-count=1"
+    "test": "LANG=zh-CN node index.js https://gw.alipayobjects.com/mdn/rms_bbcefd/afts/img/A*iAAtTbaDUAYAAAAAAAAAAABkARQnAQ --max-count=1"
   },
   "keywords": [
     "tinify",
@@ -33,6 +31,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "image-to-base64": "^2.1.0",
     "ora": "^5.0.0",
     "tinify": "^1.6.0-beta.2"
   },
