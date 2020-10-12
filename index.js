@@ -136,7 +136,7 @@ async function main() {
           console.log(GREEN, `${diff} Bytes reduced in the last turn and it is less than the delta ${DELTA} Bytes. Compressing is ready to abort.`, EOS);
         }
 
-        spinner.succeed(dictionary.compressed + ` ${timeToReadable(milliseconds)}`);
+        spinner.succeed(dictionary.compressed + ` ${timeToReadable(milliseconds)} ✨`);
 
         report(output, sizes);
 
@@ -150,7 +150,7 @@ async function main() {
       // }
     }
 
-    spinner.succeed(dictionary.compressed + ` ${timeToReadable(milliseconds)}`);
+    spinner.succeed(dictionary.compressed + ` ${timeToReadable(milliseconds)} ✨`);
 
     if (verbose) {
       console.log();
