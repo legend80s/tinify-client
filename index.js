@@ -12,14 +12,33 @@ const { getPercentageOff } = require('./utils/number');
 
 // console.log('process.argv:', process.argv);
 
+function isCmdArg(arg) {
+  return arg.startsWith('-') || arg.includes('=');
+}
+
+function not(fn) {
+  return (...args) => {
+    return !fn(...args);
+  };
+}
+
 /**
  * @type {Map<'key' | 'src' | 'max-count' | 'output' | 'verbose' | 'version', string>}
  */
-const params = new Map(process.argv.slice(2).map(entry => {
-  const splits = entry.match(/([\w\-]+)=?(.*)/);
+const params = new Map(process.argv.slice(2)
+  // collect the args prefixed with '-' or '--' or '=' as cmd
+  .filter(isCmdArg)
+  .map(entry => {
+    const splits = entry.match(/([\w\-]+)=?(.*)/);
 
-  return [splits[1].replace(/^-+/, '').trim(), splits[2].trim()]
-}));
+    return [splits[1].replace(/^-+/, '').trim(), splits[2].trim()]
+  })
+);
+
+const srcList = process.argv
+  .slice(2)
+  // collect the none-cmd args as src
+  .filter(not(isCmdArg))
 
 const verbose = params.get('verbose') === 'true' || params.get('verbose') === '';
 
@@ -28,7 +47,10 @@ const showVersion = versionArgNames.some(name =>
   params.get(name) === 'true' || params.get(name) === ''
 );
 
-verbose && console.log('params:', params);
+if (verbose) {
+  console.log('process.argv.slice(2):', process.argv.slice(2));
+  console.log('params:', params);
+}
 showVersion && console.log(' tinify client', version, '\n');
 
 const dictionary = i18n();
@@ -57,7 +79,7 @@ async function main() {
     return;
   }
 
-  const src = params.get('src');
+  const src = params.get('src') || srcList[0];
 
   if (!src) {
     console.log(YELLOW);
