@@ -15,6 +15,7 @@
 
 Compress using [tinify](https://www.npmjs.com/package/tinify) which is used by [TinyPNG](https://tinypng.com/) and [TinyJPG](https://tinyjpg.com/). Read more at [http://tinify.com](http://tinify.com/).
 
+- [Features](#features)
 - [Usage](#usage)
   - [1. Configure the key](#1-configure-the-key)
   - [2. Compress](#2-compress)
@@ -25,6 +26,11 @@ Compress using [tinify](https://www.npmjs.com/package/tinify) which is used by [
     - [2. 开始压缩](#2-开始压缩)
   - [文档](#文档)
 - [Development](#development)
+
+## Features
+
+- Compress not only intelligently but also to the EXTREME!
+- Output the base64 string of the compressed image.
 
 ## Usage
 
