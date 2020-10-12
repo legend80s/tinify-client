@@ -22,7 +22,11 @@ const params = new Map(process.argv.slice(2).map(entry => {
 }));
 
 const verbose = params.get('verbose') === 'true' || params.get('verbose') === '';
-const showVersion = params.get('version') === 'true' || params.get('version') === '';
+
+const versionArgNames = ['version', 'v']
+const showVersion = versionArgNames.some(name =>
+  params.get(name) === 'true' || params.get(name) === ''
+);
 
 verbose && console.log('params:', params);
 showVersion && console.log(' tinify client', version, '\n');
