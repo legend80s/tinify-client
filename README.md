@@ -56,6 +56,8 @@ npm install tinify-client@latest --global
 tinify-client src=IMG_URL_OR_LOCAL_IMG output=COMPRESSED_IMG_FILE_PATH
 ```
 
+![tinify-client-demo-en-US](https://raw.githubusercontent.com/legend80s/tinify-client/master/assets/demo-en-US-compressed.png)
+
 ## Documentation
 
 More parameters:
@@ -109,6 +111,8 @@ npx tinify-client src=IMG_URL_OR_LOCAL_IMG
 npm install tinify-client@latest --global
 tinify-client src=IMG_URL_OR_LOCAL_IMG
 ```
+
+![tinify-client-demo-zh-CN](https://raw.githubusercontent.com/legend80s/tinify-client/master/assets/demo-zh-CN-compressed.png)
 
 ### 文档
 
