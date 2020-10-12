@@ -2,6 +2,7 @@
 
 const tinify = require("tinify");
 const ora = require('ora');
+const clipboardy = require('clipboardy');
 
 const { getImageSize, isRemoteFile, imageToBase64 } = require('./utils/image');
 const { resolveExtFromRemote } = require('./utils/image');
@@ -288,7 +289,16 @@ async function report(dest, sizes) {
   console.log(YELLOW, summarize(dest, sizes), EOS);
   console.log();
 
-  console.log(await imageToBase64(dest));
+  const base64 = await imageToBase64(dest);
+
+  (verbose || base64.length < 3500) && console.log(base64, '\n');
+
+  if (verbose) {
+    console.log(base64.length)
+  }
+
+  clipboardy.writeSync(base64);
+  console.log(`${GREEN}The compressed image\'s base64 has been copied to your clipboard.`, EOS);
 }
 
 function summarize(dest, sizes) {
