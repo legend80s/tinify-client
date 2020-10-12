@@ -101,13 +101,13 @@ async function main() {
 
   console.log();
   let milliseconds = 0;
-  const spinner = ora(`${dictionary.compressing}... ${timeToReadable(milliseconds)}`).start();
+  const spinner = ora(`${dictionary.compressing}... ${timeToReadable(milliseconds)} 🚀`).start();
   const GAP = 100;
 
   const timer = setInterval(() => {
     milliseconds += GAP;
 
-    spinner.text = `${dictionary.compressing}... ${timeToReadable(milliseconds)}`;
+    spinner.text = `${dictionary.compressing}... ${timeToReadable(milliseconds)} 🚀`;
   }, 1 * GAP);
 
   console.time(GREEN + ` ${dictionary.genTotalTimeCostsTips(src)}` + EOS);
