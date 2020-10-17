@@ -6,7 +6,7 @@ const clipboardy = require('clipboardy');
 
 const { getImageSize, isRemoteFile, imageToBase64 } = require('./utils/image');
 const { resolveExtFromRemote } = require('./utils/image');
-const { version } = require('./package.json');
+const { version } = require('../package.json');
 const { EOS, GREEN, YELLOW, RED } = require('./constants/colors');
 const { i18n } = require('./i18n');
 const { getPercentageOff } = require('./utils/number');
@@ -67,13 +67,13 @@ async function main() {
 
     console.log(YELLOW);
 
-    console.log(` You can set key in the CLI params: $ ${GREEN}tinify-client key=YOUR_API_KEY src=IMG_URL_OR_LOCAL_IMG output=OPTIMIZED_IMG_PATH`);
+    console.log(` You can set key in the CLI params: $ ${GREEN}tinify-client IMG_URL_OR_LOCAL_IMG key=YOUR_API_KEY -o OPTIMIZED_IMG_PATH`);
     console.log(YELLOW);
     console.log(` Or append \`${GREEN}export TINIFY_KEY=YOUR_API_KEY\`${YELLOW} to your profile (~/.zshrc or ~/.bash_profile, etc.), then:`, '\n');
 
     console.log(' ```sh');
     console.log(`${GREEN} source ~/.zshrc`);
-    console.log(' tinify-client src=IMG_URL_OR_LOCAL_IMG output=OPTIMIZED_IMG_PATH', YELLOW);
+    console.log(' tinify-client IMG_URL_OR_LOCAL_IMG -o OPTIMIZED_IMG_PATH', YELLOW);
     console.log(' ```');
 
     console.log(EOS);
@@ -85,19 +85,11 @@ async function main() {
 
   if (!src) {
     console.log(YELLOW);
-    console.error('src required.\nexample: tinify-client src=IMG_URL_OR_LOCAL_IMG output=OPTIMIZED_IMG_PATH');
+    console.error('src required.\nexample: tinify-client IMG_URL_OR_LOCAL_IMG -o OPTIMIZED_IMG_PATH');
     console.log(EOS);
 
     return;
   }
-
-  // if (!/^https?:\/\/.+/.test(src)) {
-  //   console.log();
-  //   console.error('src must be a cdn address, starts with http or https.\nexample: tinify-client src=https://tinypng.com/images/panda-chewing-2x.png src=IMG_URL_OR_LOCAL_IMG output=OPTIMIZED_IMG_PATH');
-  //   console.log();
-
-  //   return;
-  // }
 
   let output = params.get('output');
 
