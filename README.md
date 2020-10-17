@@ -94,6 +94,12 @@ More parameters:
 
 ### 用法
 
+```sh
+npx tinify-client ${本地图片地址或 CDN 地址}
+```
+
+如果没有开始压缩，请设置 Key
+
 #### 1. 设置 Key
 
 Key 可从 https://tinypng.com/developers 免费获取，获取过程很简单不要有心理负担。
