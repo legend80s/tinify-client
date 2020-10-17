@@ -10,7 +10,7 @@
     "tinify": "src/index.js"
   },
   "scripts": {
-    "test": "jest",
+    "test": "LANG=zh-CN node src https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --max-count=1",
     "test:e2e": "LANG=zh-CN node src https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --output=./alipay-logo.png -verbose -no-base64 --max-count=1"
   },
   "keywords": [
@@ -30,14 +30,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "cli-aid": "^1.0.4",
+    "cli-aid": "^2.0.2",
     "clipboardy": "^2.3.0",
     "image-to-base64": "^2.1.0",
     "ora": "^5.0.0",
     "tinify": "^1.6.0-beta.2"
   },
   "devDependencies": {
-    "git-commit-msg-linter": "^2.4.4",
-    "jest": "^26.5.3"
+    "git-commit-msg-linter": "^2.4.4"
   }
 }

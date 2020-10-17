@@ -11,6 +11,7 @@ const { i18n } = require('./i18n');
 const { getPercentageOff } = require('./utils/number');
 const { CLI } = require('cli-aid');
 const { last } = require('./utils/lite-lodash');
+const package = require('../package.json');
 
 // console.log('process.argv.slice(2):', process.argv.slice(2));
 // process.exit(0)
@@ -18,7 +19,8 @@ const { last } = require('./utils/lite-lodash');
 /**
  * @type {Map<'debug' | 'key' | 'src' | 'max-count' | 'output' | 'verbose' | 'version' | 'no-base64' | 'rest', string | string[]>}
  */
-const params = new CLI(process.argv.slice(2))
+const params = new CLI()
+  .package(package)
   .usage('$ npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH')
   .option('key', { to: CLI.toString, help: 'The Tinify key. Accessible at https://tinypng.com/developers.' })
   .option('src', { to: CLI.toString, help: 'Image url or local image path to compress.' })
@@ -29,7 +31,7 @@ const params = new CLI(process.argv.slice(2))
 
   .option('debug', { to: CLI.toBoolean, help: 'Show the parsed CLI params.' })
 
-  .parse();
+  .parse(process.argv.slice(2));
 
 if (params.get('debug')) {
   console.log('params:', params);
