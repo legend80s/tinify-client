@@ -10,8 +10,8 @@
     "tinify": "src/index.js"
   },
   "scripts": {
-    "test": "LANG=zh-CN node src https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ -version --max-count=1",
-    "test:fullParams": "LANG=zh-CN node src https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --output=./alipay-logo.png -version -verbose -no-base64 --max-count=1"
+    "test": "jest",
+    "test:e2e": "LANG=zh-CN node src https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --output=./alipay-logo.png -verbose -no-base64 --max-count=2"
   },
   "keywords": [
     "tinify",
@@ -36,6 +36,7 @@
     "tinify": "^1.6.0-beta.2"
   },
   "devDependencies": {
-    "git-commit-msg-linter": "^2.4.4"
+    "git-commit-msg-linter": "^2.4.4",
+    "jest": "^26.5.3"
   }
 }
