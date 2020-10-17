@@ -9,31 +9,17 @@ const { resolveExtFromRemote } = require('./utils/image');
 const { EOS, GREEN, YELLOW, RED } = require('./constants/colors');
 const { i18n } = require('./i18n');
 const { getPercentageOff } = require('./utils/number');
-const { CLI } = require('./utils/CLI');
+const { CLI } = require('cli-aid');
 const { last } = require('./utils/lite-lodash');
 
 // console.log('process.argv.slice(2):', process.argv.slice(2));
 // process.exit(0)
 
 /**
- * @type {Array<[...string[], { to: (obj: any) => any; defaultVal: any; }]>}
- */
-// const schema = [
-//   ['key', { to: CLI.toString }],
-//   ['src', { to: CLI.toString }],
-//   ['output', 'o', { to: CLI.toString }],
-
-//   ['max-count', 'm', { to: CLI.toNumber, defaultVal: 1 }],
-
-//   ['verbose', { to: CLI.toBoolean, defaultVal: false }],
-//   ['no-base64', { to: CLI.toBoolean, defaultVal: false }],
-//   ['version', 'v', { to: CLI.toBoolean, defaultVal: false }],
-// ];
-
-/**
  * @type {Map<'debug' | 'key' | 'src' | 'max-count' | 'output' | 'verbose' | 'version' | 'no-base64' | 'rest', string | string[]>}
  */
 const params = new CLI(process.argv.slice(2))
+  .usage('$ npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH')
   .option('key', { to: CLI.toString, help: 'The Tinify key. Accessible at https://tinypng.com/developers.' })
   .option('src', { to: CLI.toString, help: 'Image url or local image path to compress.' })
   .option('output', 'o', { to: CLI.toString, help: 'The compressed image file path.' })
