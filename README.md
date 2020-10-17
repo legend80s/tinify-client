@@ -78,8 +78,8 @@ tinify-client IMG_URL_OR_LOCAL_IMG_PATH
 
 More parameters:
 
-- output -o: the final compressed img file location.
-- max-count: Set the max compressing times other than the default 15.
+- output -o: The compressed img file path.
+- max-count: Set the max compressing turns. Default 15.
 - version: Show the version.
 - verbose: Show more information about each compressing turn.
 - no-base64: Not output the base64 of the compressed image. base64 encoded by default.
