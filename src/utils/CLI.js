@@ -25,7 +25,7 @@ exports.CLI = class CLI {
     this.argv = argv;
 
     /** @type {Array<[...string[], { to: (obj: any) => any; defaultVal: any; help: string; }]>} */
-    this.schema = schema || CLI.defaultSchema;
+    this.schema = [...CLI.defaultSchema, ...(schema || [])];
 
     this.parsed = new Map();
   }
