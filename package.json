@@ -13,7 +13,8 @@
     "tinify": "./index.js"
   },
   "scripts": {
-    "test": "LANG=zh-CN node index.js https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --max-count=1"
+    "test": "LANG=zh-CN node src https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ -version --max-count=1",
+    "test:fullParams": "LANG=zh-CN node src https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --output=./alipay-logo.png -version -verbose -no-base64 --max-count=1"
   },
   "keywords": [
     "tinify",
