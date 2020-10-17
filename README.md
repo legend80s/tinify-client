@@ -153,3 +153,5 @@ tinify-client IMG_URL_OR_LOCAL_IMG
 ```sh
 LANG=zh-CN node src https://tinypng.com/images/panda-happy.png max-count=1
 ```
+
+*CLI Powered by [cli-aid](https://www.npmjs.com/package/cli-aid).*
