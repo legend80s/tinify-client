@@ -6,54 +6,60 @@ const clipboardy = require('clipboardy');
 
 const { getImageSize, isRemoteFile, imageToBase64 } = require('./utils/image');
 const { resolveExtFromRemote } = require('./utils/image');
-const { version } = require('../package.json');
 const { EOS, GREEN, YELLOW, RED } = require('./constants/colors');
 const { i18n } = require('./i18n');
 const { getPercentageOff } = require('./utils/number');
+const { CLI } = require('./utils/CLI');
+const { last } = require('./utils/lite-lodash');
 
-// console.log('process.argv:', process.argv);
-
-function isCmdArg(arg) {
-  return arg.startsWith('-') || arg.includes('=');
-}
-
-function not(fn) {
-  return (...args) => {
-    return !fn(...args);
-  };
-}
+// console.log('process.argv.slice(2):', process.argv.slice(2));
+// process.exit(0)
 
 /**
- * @type {Map<'key' | 'src' | 'max-count' | 'output' | 'verbose' | 'version', string>}
+ * @type {Array<[...string[], { to: (obj: any) => any; defaultVal: any; }]>}
  */
-const params = new Map(process.argv.slice(2)
-  // collect the args prefixed with '-' or '--' or '=' as cmd
-  .filter(isCmdArg)
-  .map(entry => {
-    const splits = entry.match(/([\w\-]+)=?(.*)/);
+// const schema = [
+//   ['key', { to: CLI.toString }],
+//   ['src', { to: CLI.toString }],
+//   ['output', 'o', { to: CLI.toString }],
 
-    return [splits[1].replace(/^-+/, '').trim(), splits[2].trim()]
-  })
-);
+//   ['max-count', 'm', { to: CLI.toNumber, defaultVal: 1 }],
 
-const srcList = process.argv
-  .slice(2)
-  // collect the none-cmd args as src
-  .filter(not(isCmdArg))
+//   ['verbose', { to: CLI.toBoolean, defaultVal: false }],
+//   ['no-base64', { to: CLI.toBoolean, defaultVal: false }],
+//   ['version', 'v', { to: CLI.toBoolean, defaultVal: false }],
+// ];
 
-const verbose = params.get('verbose') === 'true' || params.get('verbose') === '';
-const noBase64 = params.get('no-base64') === 'true' || params.get('no-base64') === '';
+/**
+ * @type {Map<'debug' | 'key' | 'src' | 'max-count' | 'output' | 'verbose' | 'version' | 'no-base64' | 'rest', string | string[]>}
+ */
+const params = new CLI(process.argv.slice(2))
+  .option('key', { to: CLI.toString, help: 'The Tinify key. Accessible at https://tinypng.com/developers.' })
+  .option('src', { to: CLI.toString, help: 'Image url or local image path to compress.' })
+  .option('output', 'o', { to: CLI.toString, help: 'The compressed image file path.' })
+  .option('max-count', 'm', { to: CLI.toNumber, defaultVal: 15, help: 'The max compressing turns. Default 15.' })
+  .option('verbose', { to: CLI.toBoolean, defaultVal: false, help: 'Show more information about each compressing turn.' })
+  .option('no-base64', { to: CLI.toBoolean, defaultVal: false, help: 'Not output the base64 of the compressed image. base64 encoded by default.' })
 
-const versionArgNames = ['version', 'v']
-const showVersion = versionArgNames.some(name =>
-  params.get(name) === 'true' || params.get(name) === ''
-);
+  .option('debug', { to: CLI.toBoolean, help: 'Show the parsed CLI params.' })
+
+  .parse();
+
+if (params.get('debug')) {
+  console.log('params:', params);
+  process.exit(0);
+}
+
+const srcList = params.get('rest');
+const verbose = params.get('verbose');
+const noBase64 = params.get('no-base64');
+
+let output = params.get('output');
 
 if (verbose) {
   console.log('process.argv.slice(2):', process.argv.slice(2));
   console.log('params:', params);
 }
-showVersion && console.log(' tinify client', version, '\n');
 
 const dictionary = i18n();
 
@@ -91,8 +97,6 @@ async function main() {
     return;
   }
 
-  let output = params.get('output');
-
   console.log();
   let milliseconds = 0;
   const spinner = ora(`${dictionary.compressing}... ${timeToReadable(milliseconds)} 🚀`).start();
@@ -123,7 +127,7 @@ async function main() {
   tinify.key = key;
 
   const DELTA = 1;
-  const MAX_COUNT = Number(params.get('max-count')) || 15;
+  const MAX_COUNT = params.get('max-count');
 
   /**
    * @param {number} limit
@@ -300,7 +304,7 @@ async function report(dest, sizes) {
 
 function summarize(dest, sizes) {
   const firstTurn = sizes[0];
-  const lastTurn = sizes[sizes.length - 1];
+  const lastTurn = last(sizes);
 
   return dictionary.summarize({
     dest,
