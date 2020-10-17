@@ -3,14 +3,11 @@
   "version": "1.5.1",
   "description": "Compress your images not only intelligently but also to the EXTREME using tinify!",
   "files": [
-    "index.js",
-    "constants/*",
-    "i18n/*",
-    "utils/*"
+    "src/*"
   ],
   "bin": {
-    "tinify-client": "./index.js",
-    "tinify": "./index.js"
+    "tinify-client": "src/index.js",
+    "tinify": "src/index.js"
   },
   "scripts": {
     "test": "LANG=zh-CN node src https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ -version --max-count=1",
@@ -26,6 +23,7 @@
     "image"
   ],
   "author": "",
+  "homepage": "https://github.com/legend80s/tinify-client",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/legend80s/tinify-client.git"
