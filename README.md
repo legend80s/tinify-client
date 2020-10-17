@@ -145,5 +145,5 @@ tinify-client IMG_URL_OR_LOCAL_IMG
 ## Development
 
 ```sh
-LANG=zh-CN node index.js https://tinypng.com/images/panda-happy.png max-count=1
+LANG=zh-CN node src https://tinypng.com/images/panda-happy.png max-count=1
 ```
