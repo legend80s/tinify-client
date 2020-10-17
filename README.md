@@ -12,8 +12,8 @@
 <p align="center"><img src="https://tinypng.com/images/panda-happy.png" width="30%" /></p>
 
 > Compress your images not only intelligently but also to the EXTREME!
-
-Compress using [tinify](https://www.npmjs.com/package/tinify) which is used by [TinyPNG](https://tinypng.com/) and [TinyJPG](https://tinyjpg.com/). Read more at [http://tinify.com](http://tinify.com/).
+>
+> *Compress using [tinify](https://www.npmjs.com/package/tinify) which is used by [TinyPNG](https://tinypng.com/) and [TinyJPG](https://tinyjpg.com/). Read more at [http://tinify.com](http://tinify.com/).*
 
 ```sh
 npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
@@ -78,7 +78,7 @@ tinify-client IMG_URL_OR_LOCAL_IMG_PATH
 
 More parameters:
 
-- output: the final compressed img file location.
+- output -o: the final compressed img file location.
 - max-count: Set the max compressing times other than the default 15.
 - version: Show the version.
 - verbose: Show more information about each compressing turn.
@@ -88,7 +88,7 @@ More parameters:
 
 ## 中文版文档
 
-> 用 https://tinypng.com/ 使用的压缩技术将图片压缩到**极致**。
+> 用 [tinypng.com](https://tinypng.com/) 使用的压缩技术将图片压缩到**极致**。
 >
 > 解决需要手动将一张图片拖放到 tinypng 十几次才能达到极致压缩的难题
 
@@ -136,7 +136,7 @@ tinify-client IMG_URL_OR_LOCAL_IMG
 
 - key: tinypng 需要的 key
 - src: 支持 cdn 地址或本地图片
-- output: 最终压缩图片的地址
+- output -o: 最终压缩图片的地址
 - max-count: 最大压缩次数，默认 15 次
 - version: 显示该工具的版本号
 - verbose: 显示每一次压缩的日志
