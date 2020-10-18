@@ -30,7 +30,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "cli-aid": "^2.0.2",
+    "cli-aid": "^2.0.4",
     "clipboardy": "^2.3.0",
     "image-to-base64": "^2.1.0",
     "ora": "^5.0.0",
