@@ -25,14 +25,14 @@ let base64CmdExecuting = false;
 const params = new CLI()
   .package(package)
   .usage('$ npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH [OPTIONS]')
-  .option('key', { to: String, help: 'The Tinify key. Accessible at https://tinypng.com/developers.' })
-  .option('src', { to: String, help: 'Image url or local image path to compress.' })
-  .option('output', 'o', { to: String, help: 'The compressed image file path.' })
-  .option('max-count', 'm', { to: Number, defaultVal: 15, help: 'The max compressing turns. Default 15.' })
-  .option('verbose', { to: CLI.toBoolean, defaultVal: false, help: 'Show more information about each compressing turn.' })
-  .option('no-base64', { to: CLI.toBoolean, defaultVal: false, help: 'Not output the base64 of the compressed image. base64 encoded by default.' })
+  .option('key', { help: 'The Tinify key. Accessible at https://tinypng.com/developers.' })
+  .option('src', { help: 'Image url or local image path to compress.' })
+  .option('output', 'o', { help: 'The compressed image file path.' })
+  .option('max-count', 'm', { defaultVal: 15, help: 'The max compressing turns. Default 15.' })
+  .option('verbose', { defaultVal: false, help: 'Show more information about each compressing turn.' })
+  .option('no-base64', { defaultVal: false, help: 'Not output the base64 of the compressed image. base64 encoded by default.' })
 
-  .option('debug', 'd', { to: CLI.toBoolean, help: 'Show the parsed CLI params.' })
+  .option('debug', 'd', { help: 'Show the parsed CLI params.' })
 
   .command('base64', {
     usage: base64Usage,
