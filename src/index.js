@@ -21,11 +21,11 @@ const package = require('../package.json');
  */
 const params = new CLI()
   .package(package)
-  .usage('$ npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH')
-  .option('key', { to: CLI.toString, help: 'The Tinify key. Accessible at https://tinypng.com/developers.' })
-  .option('src', { to: CLI.toString, help: 'Image url or local image path to compress.' })
-  .option('output', 'o', { to: CLI.toString, help: 'The compressed image file path.' })
-  .option('max-count', 'm', { to: CLI.toNumber, defaultVal: 15, help: 'The max compressing turns. Default 15.' })
+  .usage('$ npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH [OPTIONS]')
+  .option('key', { to: String, help: 'The Tinify key. Accessible at https://tinypng.com/developers.' })
+  .option('src', { to: String, help: 'Image url or local image path to compress.' })
+  .option('output', 'o', { to: String, help: 'The compressed image file path.' })
+  .option('max-count', 'm', { to: Number, defaultVal: 15, help: 'The max compressing turns. Default 15.' })
   .option('verbose', { to: CLI.toBoolean, defaultVal: false, help: 'Show more information about each compressing turn.' })
   .option('no-base64', { to: CLI.toBoolean, defaultVal: false, help: 'Not output the base64 of the compressed image. base64 encoded by default.' })
 
