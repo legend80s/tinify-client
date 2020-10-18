@@ -16,6 +16,9 @@ const package = require('../package.json');
 // console.log('process.argv.slice(2):', process.argv.slice(2));
 // process.exit(0)
 
+const base64Usage = 'tinify-client-cli base64 IMG_URL_OR_LOCAL_IMG_PATH';
+let base64CmdExecuting = false;
+
 /**
  * @type {Map<'debug' | 'key' | 'src' | 'max-count' | 'output' | 'verbose' | 'version' | 'no-base64' | 'rest', string | string[]>}
  */
@@ -29,7 +32,37 @@ const params = new CLI()
   .option('verbose', { to: CLI.toBoolean, defaultVal: false, help: 'Show more information about each compressing turn.' })
   .option('no-base64', { to: CLI.toBoolean, defaultVal: false, help: 'Not output the base64 of the compressed image. base64 encoded by default.' })
 
-  .option('debug', { to: CLI.toBoolean, help: 'Show the parsed CLI params.' })
+  .option('debug', 'd', { to: CLI.toBoolean, help: 'Show the parsed CLI params.' })
+
+  .command('base64', {
+    usage: base64Usage,
+    help: 'Output base64-encoded string of the input image.',
+  }, async options => {
+    base64CmdExecuting = true;
+
+    options.get('verbose') && console.log('output base64 with options:', options);
+
+    const img = options.get('rest').find(arg => arg !== 'base64');
+
+    options.get('verbose') && console.log('img:', img);
+
+    if (img) {
+      try {
+        console.time('image to base64 costs')
+        console.log();
+        copyBase64(await imageToBase64(img), { verbose: true });
+
+        console.log(`${GREEN}base64 has been copied to your clipboard.`, EOS);
+        console.log();
+      } finally {
+        console.timeEnd('image to base64 costs')
+      }
+    } else {
+      console.warn('\nimage required. Usage: $ ' + base64Usage, '\n');
+    }
+
+    process.exit(0);
+  })
 
   .parse(process.argv.slice(2));
 
@@ -241,7 +274,11 @@ async function main() {
   }
 }
 
-main();
+// console.log('base64CmdExecuting:', base64CmdExecuting);
+
+if (!base64CmdExecuting) {
+  main();
+}
 
 /**
  * @param {string} endpoint
@@ -280,14 +317,20 @@ async function report(dest, sizes) {
 
   const base64 = await imageToBase64(dest);
 
+  copyBase64(base64, { verbose });
+
+  console.log(`${GREEN}The compressed image\'s base64 has been copied to your clipboard.`, EOS);
+}
+
+function copyBase64(base64, { verbose }) {
+  // console.log('verbose:', verbose);
   (verbose || base64.length < 3500) && console.log(base64, '\n');
 
   if (verbose) {
-    console.log(base64.length)
+    console.log('length:', base64.length)
   }
 
   clipboardy.writeSync(base64);
-  console.log(`${GREEN}The compressed image\'s base64 has been copied to your clipboard.`, EOS);
 }
 
 function summarize(dest, sizes) {

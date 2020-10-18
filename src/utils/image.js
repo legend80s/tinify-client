@@ -91,28 +91,10 @@ exports.imageToBase64 = async url => {
 
 /**
  *
- * @param {string} url url or local image patch
- */
-async function resolveExt(url) {
-  const ext = extname(url);
-
-  if (ext) {
-    return ext.split('.').pop();
-  }
-
-  if (isRemoteFile(url)) {
-    return resolveExtFromRemote(url);
-  }
-
-  return '';
-}
-
-/**
- *
  * @param {string} url img url
  * @returns {Promise<string>}
  */
-exports.resolveExtFromRemote = function resolveExtFromRemote(url) {
+const resolveExtFromRemote = url => {
   return new Promise(resolve => {
     const req = getRequest(url)
       .get(url, (resp) => {
@@ -145,4 +127,23 @@ exports.resolveExtFromRemote = function resolveExtFromRemote(url) {
         req.abort()
       })
   })
+}
+
+exports.resolveExtFromRemote = resolveExtFromRemote;
+
+/**
+ * @param {string} url url or local image patch
+ */
+async function resolveExt(url) {
+  const ext = extname(url);
+
+  if (ext) {
+    return ext.split('.').pop();
+  }
+
+  if (isRemoteFile(url)) {
+    return resolveExtFromRemote(url);
+  }
+
+  return '';
 }
