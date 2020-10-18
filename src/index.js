@@ -50,12 +50,13 @@ const params = new CLI()
       try {
         console.time('image to base64 costs')
         console.log();
+
         copyBase64(await imageToBase64(img), { verbose: true });
 
         console.log(`${GREEN}base64 has been copied to your clipboard.`, EOS);
-        console.log();
       } finally {
         console.timeEnd('image to base64 costs')
+        console.log();
       }
     } else {
       console.warn('\nimage required. Usage: $ ' + base64Usage, '\n');
