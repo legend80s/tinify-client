@@ -34,12 +34,16 @@ npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
 ## Features
 
 - Compress not only intelligently but also to the EXTREME!
-- Output the base64 string of the compressed image.
+- Output the input image's base64.
 
 ## Usage
 
 ```sh
+# compress and output the compressed img's base64
 npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
+
+# iamge to base64 only
+npx tinify-client base64 IMG_URL_OR_LOCAL_IMG_PATH
 ```
 
 If not work, try to set the key.
@@ -95,7 +99,11 @@ More parameters:
 ### 用法
 
 ```sh
-npx tinify-client ${本地图片地址或 CDN 地址}
+# 压缩本地图片地址或 CDN 地址
+npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
+
+# 图片转 base64
+npx tinify-client base64 IMG_URL_OR_LOCAL_IMG_PATH
 ```
 
 如果没有开始压缩，请设置 Key
