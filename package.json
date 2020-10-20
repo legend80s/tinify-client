@@ -10,7 +10,7 @@
     "tinify": "src/index.js"
   },
   "scripts": {
-    "test": "LANG=zh-CN node src https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --max-count=1",
+    "test": "LANG=zh-CN node src https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --max-count=1 -o=./",
     "test:e2e": "LANG=zh-CN node src https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --output=./alipay-logo.png -verbose -no-base64 --max-count=1"
   },
   "keywords": [

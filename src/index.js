@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const fs = require("fs");
 const tinify = require("tinify");
 const ora = require('ora');
 const clipboardy = require('clipboardy');
@@ -12,6 +13,7 @@ const { getPercentageOff } = require('./utils/number');
 const { CLI } = require('cli-aid');
 const { last } = require('./utils/lite-lodash');
 const package = require('../package.json');
+const { join } = require('path');
 
 // console.log('process.argv.slice(2):', process.argv.slice(2));
 // process.exit(0)
@@ -132,17 +134,9 @@ async function main() {
 
   console.time(GREEN + ` ${dictionary.genTotalTimeCostsTips(src)}` + EOS);
 
-  if (!output) {
-    verbose && console.time(GREEN + ' resolveFilenameFromEndpoint ' + src + ' costs' + EOS);
-
-    try {
-      output = await resolveFilenameFromEndpoint(src);
-    } finally {
-      verbose && console.timeEnd(GREEN + ' resolveFilenameFromEndpoint ' + src + ' costs' + EOS);
-    }
+  if (!output || fs.statSync(output).isDirectory()) {
+    output = await resolveOutput(output, src);
   }
-
-  // console.log('output:', output);
 
   // return;
 
@@ -351,4 +345,28 @@ function timeToReadable(milliseconds) {
   const seconds = String(milliseconds / 1000);
 
   return seconds.includes('.') ?  `${seconds}s` : `${seconds}.0s`;
+}
+
+/**
+ * @param {string} out
+ * @param {string} url
+ */
+async function resolveOutput(out, url) {
+  const label = GREEN + 'no output or is dir, resolve filename from url ' + url + ' costs' + EOS;
+
+  verbose && console.time(label);
+
+  let filename = '';
+
+  try {
+    filename = await resolveFilenameFromEndpoint(url);
+  } finally {
+    verbose && console.timeEnd(label);
+  }
+
+  const output = out ? join(out, filename) : filename;
+
+  verbose && console.log('output after resolved:', output);
+
+  return output;
 }
