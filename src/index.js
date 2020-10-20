@@ -13,7 +13,7 @@ const { getPercentageOff } = require('./utils/number');
 const { CLI } = require('cli-aid');
 const { last } = require('./utils/lite-lodash');
 const package = require('../package.json');
-const { join } = require('path');
+const { join, basename } = require('path');
 
 // console.log('process.argv.slice(2):', process.argv.slice(2));
 // process.exit(0)
@@ -134,8 +134,12 @@ async function main() {
 
   console.time(GREEN + ` ${dictionary.genTotalTimeCostsTips(src)}` + EOS);
 
-  if (!output || fs.statSync(output).isDirectory()) {
-    output = await resolveOutput(output, src);
+  if (!output) {
+    output = await resolveOutput(src);
+  } else if (fs.statSync(output).isDirectory()) {
+    const filename = basename(src);
+
+    output = join(output, filename);
   }
 
   // return;
@@ -348,23 +352,22 @@ function timeToReadable(milliseconds) {
 }
 
 /**
- * @param {string} out
- * @param {string} url
+ * @param {string} endpoint local image path or
  */
-async function resolveOutput(out, url) {
-  const label = GREEN + 'no output or is dir, resolve filename from url ' + url + ' costs' + EOS;
+async function resolveOutput(endpoint) {
+  const label = GREEN + `no output resolve filename from url ` + endpoint + ' costs' + EOS;
 
   verbose && console.time(label);
 
   let filename = '';
 
   try {
-    filename = await resolveFilenameFromEndpoint(url);
+    filename = await resolveFilenameFromEndpoint(endpoint);
   } finally {
     verbose && console.timeEnd(label);
   }
 
-  const output = out ? join(out, filename) : filename;
+  const output = filename;
 
   verbose && console.log('output after resolved:', output);
 
