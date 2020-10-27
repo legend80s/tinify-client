@@ -14,6 +14,7 @@ const { CLI } = require('cli-aid');
 const { last } = require('./utils/lite-lodash');
 const package = require('../package.json');
 const { join, basename } = require('path');
+const { isDirectory } = require('./utils/lite-fs');
 
 // console.log('process.argv.slice(2):', process.argv.slice(2));
 // process.exit(0)
@@ -136,7 +137,7 @@ async function main() {
 
   if (!output) {
     output = await resolveOutput(src);
-  } else if (fs.statSync(output).isDirectory()) {
+  } else if (isDirectory(output)) {
     let filename = basename(src);
 
     if (isRemoteFile(src)) {
