@@ -137,7 +137,15 @@ async function main() {
   if (!output) {
     output = await resolveOutput(src);
   } else if (fs.statSync(output).isDirectory()) {
-    const filename = basename(src);
+    let filename = basename(src);
+
+    if (isRemoteFile(src)) {
+      const ext = await resolveExtFromRemote(src);
+
+      if (ext) {
+        filename = `${filename}.${ext}`;
+      }
+    }
 
     output = join(output, filename);
   }
@@ -315,6 +323,10 @@ async function report(dest, sizes) {
   }
 
   const base64 = await imageToBase64(dest);
+
+  if (!base64) {
+    return;
+  }
 
   copyBase64(base64, { verbose });
 
