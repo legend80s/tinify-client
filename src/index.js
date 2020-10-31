@@ -1,9 +1,6 @@
 #!/usr/bin/env node
-
-const fs = require("fs");
 const tinify = require("tinify");
 const ora = require('ora');
-const clipboardy = require('clipboardy');
 
 const { getImageSize, isRemoteFile, imageToBase64 } = require('./utils/image');
 const { resolveExtFromRemote } = require('./utils/image');
@@ -15,6 +12,8 @@ const { last } = require('./utils/lite-lodash');
 const package = require('../package.json');
 const { join, basename } = require('path');
 const { isDirectory } = require('./utils/lite-fs');
+const { executeBase64Command } = require('./commands/executeBase64Command');
+const { copyBase64 } = require('./utils/copyBase64');
 
 // console.log('process.argv.slice(2):', process.argv.slice(2));
 // process.exit(0)
@@ -43,27 +42,7 @@ const params = new CLI()
   }, async options => {
     base64CmdExecuting = true;
 
-    options.get('verbose') && console.log('output base64 with options:', options);
-
-    const img = options.get('rest').find(arg => arg !== 'base64');
-
-    options.get('verbose') && console.log('img:', img);
-
-    if (img) {
-      try {
-        console.time('image to base64 costs')
-        console.log();
-
-        copyBase64(await imageToBase64(img), { verbose: true });
-
-        console.log(`${GREEN}base64 has been copied to your clipboard.`, EOS);
-      } finally {
-        console.timeEnd('image to base64 costs')
-        console.log();
-      }
-    } else {
-      console.warn('\nimage required. Usage: $ ' + base64Usage, '\n');
-    }
+    await executeBase64Command(options);
 
     process.exit(0);
   })
@@ -332,17 +311,6 @@ async function report(dest, sizes) {
   copyBase64(base64, { verbose });
 
   console.log(`${GREEN}The compressed image\'s base64 has been copied to your clipboard.`, EOS);
-}
-
-function copyBase64(base64, { verbose }) {
-  // console.log('verbose:', verbose);
-  (verbose || base64.length < 3500) && console.log(base64, '\n');
-
-  if (verbose) {
-    console.log('length:', base64.length)
-  }
-
-  clipboardy.writeSync(base64);
 }
 
 function summarize(dest, sizes) {
