@@ -1,4 +1,4 @@
-const { EOS } = require('../constants/colors');
+const { EOS, GREEN, UNDERLINED } = require('../constants/colors');
 
 /**
  * Make text underlined.
@@ -6,7 +6,9 @@ const { EOS } = require('../constants/colors');
  * @returns {string}
  */
 exports.underline = function underline(text) {
-  const UNDERLINED = '\x1b[4m';
-
   return `${UNDERLINED}${text}${EOS}`;
+}
+
+exports.green = (text) => {
+  return `${GREEN}${text}${EOS}`;
 }

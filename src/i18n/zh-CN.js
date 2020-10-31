@@ -8,7 +8,7 @@ module.exports = {
   compressed: '压缩结束',
   compressFailed: '压缩失败',
 
-  summarize: ({ dest, beforeSizeInByte, afterSizeInByte, nTurns, lastTurnDelta } = {}) => {
+  summarize: ({ dest, beforeSizeInByte, afterSizeInByte, nTurns, lastTurnDelta, cost }) => {
     const totalBytesOff = beforeSizeInByte - afterSizeInByte;
     const totalPercentageOff = getPercentageOff(beforeSizeInByte, afterSizeInByte);
 

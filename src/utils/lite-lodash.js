@@ -2,7 +2,7 @@
  * @param {T[]} arr
  * @returns {T}
  */
-exports.last = function last(arr) {
+exports.last = (arr) => {
   return arr[arr.length - 1];
 }
 
@@ -11,6 +11,12 @@ exports.last = function last(arr) {
  * @param {any} obj
  * @returns {boolean}
  */
-exports.isString = function isString(obj) {
+exports.isString = (obj) => {
   return typeof obj === 'string';
+}
+
+exports.timeToReadable = (milliseconds) => {
+  const seconds = String(milliseconds / 1000);
+
+  return seconds.includes('.') ?  `${seconds}s` : `${seconds}.0s`;
 }

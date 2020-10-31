@@ -1,21 +1,26 @@
 #!/usr/bin/env node
+
+const { join, basename } = require('path');
 const tinify = require("tinify");
 const ora = require('ora');
+const { CLI } = require('cli-aid');
+
+const package = require('../package.json');
+
+const { base64Usage } = require('./constants');
+const { EOS, GREEN, YELLOW, RED } = require('./constants/colors');
 
 const { getImageSize, isRemoteFile, imageToBase64 } = require('./utils/image');
 const { resolveExtFromRemote } = require('./utils/image');
-const { EOS, GREEN, YELLOW, RED } = require('./constants/colors');
-const { i18n } = require('./i18n');
 const { getPercentageOff } = require('./utils/number');
-const { CLI } = require('cli-aid');
-const { last } = require('./utils/lite-lodash');
-const package = require('../package.json');
-const { join, basename } = require('path');
+const { last, timeToReadable } = require('./utils/lite-lodash');
 const { isDirectory } = require('./utils/lite-fs');
 const { executeBase64Command } = require('./commands/executeBase64Command');
 const { copyBase64 } = require('./utils/copyBase64');
-const { base64Usage } = require('./constants');
 const { decorated } = require('./utils/decorated-console');
+
+const { i18n } = require('./i18n');
+const { compressBatch } = require('./compressBatch');
 
 // console.log('process.argv.slice(2):', process.argv.slice(2));
 // process.exit(0)
@@ -23,7 +28,7 @@ const { decorated } = require('./utils/decorated-console');
 let base64CmdExecuting = false;
 
 /**
- * @type {Map<'debug' | 'key' | 'src' | 'max-count' | 'output' | 'verbose' | 'version' | 'no-base64' | 'rest', string | string[]>}
+ * @type {Map<'debug' | 'batch' | 'key' | 'src' | 'max-count' | 'output' | 'verbose' | 'version' | 'no-base64' | 'rest', string | string[]>}
  */
 const params = new CLI()
   .package(package)
@@ -32,6 +37,7 @@ const params = new CLI()
   .option('src', { help: 'Image url or local image path to compress.' })
   .option('output', 'o', { help: 'The compressed image file path.' })
   .option('max-count', 'm', { defaultVal: 15, help: 'The max compressing turns. Default 15.' })
+  .option('in-place', 'i', { defaultVal: false, help: 'Overwrite the original image. Default false' })
   .option('verbose', { defaultVal: false, help: 'Show more information about each compressing turn.' })
   .option('no-base64', { defaultVal: false, help: 'Not output the base64 of the compressed image. base64 encoded by default.' })
 
@@ -58,6 +64,11 @@ if (params.get('debug')) {
 const srcList = params.get('rest');
 const verbose = params.get('verbose');
 const noBase64 = params.get('no-base64');
+const inPlace = params.get('in-place');
+
+const batch = process.env.BATCH === 'true';
+
+verbose && console.log('batch:', batch);
 
 let output = params.get('output');
 
@@ -104,16 +115,27 @@ async function main() {
     return;
   }
 
-  console.log();
+  if (isDirectory(src)) {
+    return await compressBatch(src, params);
+  }
+
+  let timer;
   let milliseconds = 0;
-  const spinner = ora(`${dictionary.compressing}... ${timeToReadable(milliseconds)} 🚀`).start();
-  const GAP = 100;
+  let spinner;
+  const start = Date.now();
 
-  const timer = setInterval(() => {
-    milliseconds += GAP;
+  if (!batch) {
+    console.log();
 
-    spinner.text = `${dictionary.compressing}... ${timeToReadable(milliseconds)} 🚀`;
-  }, 1 * GAP);
+    spinner = ora(`${dictionary.compressing}... ${timeToReadable(milliseconds)} 🚀`).start();
+    const GAP = 100;
+
+    timer = setInterval(() => {
+      milliseconds += GAP;
+
+      spinner.text = `${dictionary.compressing}... ${timeToReadable(milliseconds)} 🚀`;
+    }, 1 * GAP);
+  }
 
   console.time(GREEN + ` ${dictionary.genTotalTimeCostsTips(src)}` + EOS);
 
@@ -171,9 +193,9 @@ async function main() {
           console.log(GREEN, `${diff} Bytes reduced in the last turn and it is less than the delta ${DELTA} Bytes. Compressing is ready to abort.`, EOS);
         }
 
-        spinner.succeed(dictionary.compressed + ` ${timeToReadable(milliseconds)} ✨`);
+        !batch && spinner.succeed(dictionary.compressed + ` ${timeToReadable(milliseconds)} ✨`);
 
-        report(output, sizes);
+        report(src, output, sizes, Date.now() - start);
 
         return;
       }
@@ -185,7 +207,7 @@ async function main() {
       // }
     }
 
-    spinner.succeed(dictionary.compressed + ` ${timeToReadable(milliseconds)} ✨`);
+    !batch && spinner.succeed(dictionary.compressed + ` ${timeToReadable(milliseconds)} ✨`);
 
     if (verbose) {
       console.log();
@@ -197,7 +219,7 @@ async function main() {
       );
     }
 
-    report(output, sizes);
+    report(src, output, sizes, Date.now() - start);
 
     return;
   } catch (error) {
@@ -207,6 +229,10 @@ async function main() {
 
     return;
   } finally {
+    if (batch) {
+      return;
+    }
+
     clearInterval(timer);
 
     if (verbose) {
@@ -275,7 +301,7 @@ if (!base64CmdExecuting) {
  * @returns {Promise<string>}
  */
 async function resolveFilenameFromEndpoint(endpoint) {
-  if (!isRemoteFile(endpoint)) {
+  if (!isRemoteFile(endpoint) && !inPlace) {
     // a.png => a-compressed.png
     // a => a-compressed
     return endpoint.replace(/(\.\w+)?$/, (m, $1) => `-compressed${$1 || ''}`);
@@ -296,9 +322,9 @@ async function resolveFilenameFromEndpoint(endpoint) {
   return filename;
 }
 
-async function report(dest, sizes) {
+async function report(src, dest, sizes, cost) {
   console.log();
-  console.log(YELLOW, summarize(dest, sizes), EOS);
+  console.log(summarize(src, dest, sizes, cost), EOS);
   console.log();
 
   if (noBase64) {
@@ -311,28 +337,26 @@ async function report(dest, sizes) {
     return;
   }
 
-  copyBase64(base64, { verbose: verbose || sizes[1] < 1024  });
+  // console.log('sizes:', sizes);
+
+  copyBase64(base64, { verbose: verbose || last(sizes)[1] < 1024 });
 
   decorated.success('The compressed image\'s base64 has been copied to your clipboard.');
 }
 
-function summarize(dest, sizes) {
+function summarize(src, dest, sizes, cost) {
   const firstTurn = sizes[0];
   const lastTurn = last(sizes);
 
   return dictionary.summarize({
+    src,
     dest,
     beforeSizeInByte: firstTurn[0],
     afterSizeInByte: lastTurn[1],
     nTurns: sizes.length,
     lastTurnDelta: lastTurn[0] - lastTurn[1],
+    cost,
   })
-}
-
-function timeToReadable(milliseconds) {
-  const seconds = String(milliseconds / 1000);
-
-  return seconds.includes('.') ?  `${seconds}s` : `${seconds}.0s`;
 }
 
 /**

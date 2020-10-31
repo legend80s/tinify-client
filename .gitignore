@@ -1,5 +1,6 @@
 node_modules
 *.png
+*.jpg
 !assets/*
 *.tgz
 .DS_Store
