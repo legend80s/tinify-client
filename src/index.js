@@ -309,7 +309,7 @@ async function report(dest, sizes) {
     return;
   }
 
-  copyBase64(base64, { verbose });
+  copyBase64(base64, { verbose: verbose || sizes[1] < 1024  });
 
   decorated.success('The compressed image\'s base64 has been copied to your clipboard.');
 }
