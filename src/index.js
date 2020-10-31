@@ -73,7 +73,9 @@ async function main() {
   const TINIFY_KEY = process.env.TINIFY_KEY;
   const key = keyFromCli || TINIFY_KEY;
 
-  if (!key) {
+  if (key || base64CmdExecuting) {
+    // no need to check the key
+  } else {
     console.error(YELLOW, 'key required. Get your key at', `${GREEN}https://tinypng.com/developers`, EOS);
 
     console.log(YELLOW);
