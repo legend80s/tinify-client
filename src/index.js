@@ -15,6 +15,7 @@ const { isDirectory } = require('./utils/lite-fs');
 const { executeBase64Command } = require('./commands/executeBase64Command');
 const { copyBase64 } = require('./utils/copyBase64');
 const { base64Usage } = require('./constants');
+const { decorated } = require('./utils/decorated-console');
 
 // console.log('process.argv.slice(2):', process.argv.slice(2));
 // process.exit(0)
@@ -310,7 +311,7 @@ async function report(dest, sizes) {
 
   copyBase64(base64, { verbose });
 
-  console.log(`${GREEN}The compressed image\'s base64 has been copied to your clipboard.`, EOS);
+  decorated.success('The compressed image\'s base64 has been copied to your clipboard.');
 }
 
 function summarize(dest, sizes) {
