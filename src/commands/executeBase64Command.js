@@ -1,7 +1,8 @@
 const { imageToBase64 } = require('../utils/image');
 const { copyBase64 } = require('../utils/copyBase64');
-const { GREEN, EOS } = require('../constants/colors');
 const { getFileSize } = require('@legend80s/image-to-base64');
+const { base64Usage } = require('../constants');
+const { decorated } = require('../utils/decorated-console');
 
 /**
  * @param {Map<string, any>} options
@@ -9,29 +10,36 @@ const { getFileSize } = require('@legend80s/image-to-base64');
 exports.executeBase64Command = async options => {
   const verbose = options.get('verbose');
 
-  verbose && console.log('output base64 with options:', options);
+  verbose && decorated.info('output base64 with options:', options);
 
   const img = options.get('rest').find(arg => arg !== 'base64');
 
-  verbose && console.log('img:', img);
+  verbose && decorated.info('img:', img);
 
   if (img) {
-    try {
-      console.time('image to base64 costs')
-      console.log();
+    // const start = Date.now();
+    decorated.time('image to base64 costs:');
 
+    try {
       const size = await getFileSize(img);
 
-      console.log('image size:', size, 'Bytes');
+      if (!size) {
+        throw new Error('invalid image, size is ' + size);
+      }
 
-      copyBase64(await imageToBase64(img), { verbose });
+      decorated.info('image size:', size, 'Bytes');
 
-      console.log(`${GREEN}base64 has been copied to your clipboard.`, EOS);
-    } finally {
-      console.timeEnd('image to base64 costs')
+      const base64 = await imageToBase64(img);
+
+      copyBase64(base64, { verbose });
+
+      decorated.success('base64 has been copied to your clipboard.');
+      decorated.timeEnd('image to base64 costs:');
       console.log();
+    } catch (error) {
+      decorated.error(error);
     }
   } else {
-    console.warn('\nimage required. Usage: $ ' + base64Usage, '\n');
+    decorated.warn('image required. Usage: $ ' + base64Usage, '\n');
   }
 }

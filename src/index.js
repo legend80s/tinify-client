@@ -14,11 +14,11 @@ const { join, basename } = require('path');
 const { isDirectory } = require('./utils/lite-fs');
 const { executeBase64Command } = require('./commands/executeBase64Command');
 const { copyBase64 } = require('./utils/copyBase64');
+const { base64Usage } = require('./constants');
 
 // console.log('process.argv.slice(2):', process.argv.slice(2));
 // process.exit(0)
 
-const base64Usage = 'tinify-client-cli base64 IMG_URL_OR_LOCAL_IMG_PATH';
 let base64CmdExecuting = false;
 
 /**
