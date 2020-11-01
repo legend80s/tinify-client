@@ -12,7 +12,7 @@
   },
   "scripts": {
     "preversion": "npm run test",
-    "test": "jest && npm run test:compress-and-base64 && npm run test:compress-no-base64 && npm run test:compress-and-base64 && test:compress-dir",
+    "test": "jest && npm run test:compress-and-base64 && npm run test:compress-no-base64 && npm run test:compress-and-base64 && npm run test:compress-dir",
     "test:compress-dir": "node src/cli ./ -c=1 --in-place=true",
     "test:compress-and-base64": "LANG=zh-CN node src/cli https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --max-count=1 -o=./",
     "test:base64": "LANG=zh-CN node src/cli base64 https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ",
