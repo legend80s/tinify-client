@@ -49,7 +49,7 @@ exports.compressBatch = async (directory, params) => {
     const args = files
       .map(file => {
         return [
-          `"node src ${file}`,
+          `"node ./src/cli ${file}`,
           `--max-count=${params.get('max-count')}`,
           `--in-place=${params.get('in-place')}`,
           `--no-base64"`,
