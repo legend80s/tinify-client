@@ -1,14 +1,7 @@
 const { imageToBase64, getFileSize } = require('@legend80s/image-to-base64');
 
-const { extname } = require('path');
-const { tmpdir } = require('os');
-const { join } = require('path');
-const url = require('url');
-const fs = require('fs');
-
 const { getRequest } = require('./request');
 
-const { createWriteStream } = fs;
 
 /**
  * @param {string} path
@@ -62,20 +55,3 @@ const resolveExtFromRemote = url => {
 }
 
 exports.resolveExtFromRemote = resolveExtFromRemote;
-
-/**
- * @param {string} url url or local image patch
- */
-async function resolveExt(url) {
-  const ext = extname(url);
-
-  if (ext) {
-    return ext.split('.').pop();
-  }
-
-  if (isRemoteFile(url)) {
-    return resolveExtFromRemote(url);
-  }
-
-  return '';
-}
