@@ -15,7 +15,7 @@
     "test:concurrently": "concurrently -n xiena,alipay 'xtinify-client https://4img.hitv.com/preview/star_images/2020/xiena/xiena20200401155541958.jpg -m=1' 'node src https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ -m=1'",
     "test:compress-and-base64": "LANG=zh-CN node src https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --max-count=1 -o=./",
     "test:base64": "LANG=zh-CN node src base64 https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ",
-    "test:compress-no-base64": "LANG=zh-CN node src https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --output=./alipay-logo.png -verbose -no-base64 --max-count=1"
+    "test:compress-no-base64": "node src https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --output=./alipay-logo.png -verbose -no-base64 --max-count=1"
   },
   "keywords": [
     "tinify",

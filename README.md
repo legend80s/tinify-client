@@ -34,21 +34,36 @@ npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
 ## Features
 
 - Compress not only intelligently but also to the EXTREME!
+- Compress all the images in a folder.
 - Output the input image's base64.
 
 ## Usage
 
-```sh
-# compress and output the compressed img's base64
-npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
+1. compress and output the compressed image's base64
 
-# iamge to base64 only
+```sh
+npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
+```
+
+2. compress all the images in a folder
+
+```sh
+npx tinify-client LOCAL_IMG_FOLDER
+```
+
+3. image to base64 only (No need to configure key)
+
+```sh
 npx tinify-client base64 IMG_URL_OR_LOCAL_IMG_PATH
 ```
 
-If not work, try to set the key.
+or install as a global CLI
 
-### 1. Configure the key
+```sh
+npm install tinify-client@latest --global
+```
+
+### Configure the key
 
 1. Get your key at https://tinypng.com/developers.
 2. Then set the key in the CLI params when compressing: `$ tinify-client key=YOUR_API_KEY`。
@@ -60,19 +75,9 @@ If not work, try to set the key.
    source ~/.zshrc
    ```
 
-### 2. Compress
+### start compressing
 
 ```sh
-npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
-```
-
-or install as a global CLI
-
-```sh
-# install
-npm install tinify-client@latest --global
-
-# start compressing
 tinify-client IMG_URL_OR_LOCAL_IMG_PATH
 ```
 
