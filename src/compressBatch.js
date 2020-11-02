@@ -1,8 +1,9 @@
 const ora = require('ora');
+const { join } = require('path');
 const { promisify } = require('util');
 const { GREEN, EOS } = require('./constants/colors');
 
-const glob = promisify(require("glob"))
+const glob = require('fast-glob');
 const exec = promisify(require('child_process').exec);
 
 const { i18n } = require('./i18n');
@@ -31,25 +32,36 @@ exports.compressBatch = async (directory, params) => {
 
   let errorMsg = '';
 
+  const separator = directory.endsWith('/') ? '' : '/';
+  const pattern = `${directory}${separator}**/*.{png,jpg}`;
+
   try {
     /** @type {string[]} */
-    const files = await glob('*.{png,jpg}');
-    // const files = await glob('{alipay-logo,contact}.png');
+    const images = await glob(pattern, {
+      ignore: [
+        '**/node_modules',
+      ],
+      onlyFiles: true,
+    });
 
-    if (!files.length) {
+    console.log(`images from glob: ${pattern}`, images);
+
+    if (!images.length) {
       errorMsg = `Found 0 images in ${directory}. Aborted`;
 
       return;
     } else {
-      decorated.info(`Found ${files.length} images in ${directory}`);
+      decorated.info(`Found ${images.length} images in ${directory}`);
     }
 
     spinner.start();
 
-    const args = files
+    const cliPath = join(__dirname, './cli');
+
+    const args = images
       .map(file => {
         return [
-          `"node ./src/cli ${file}`,
+          `"node ${cliPath} ${file}`,
           `--max-count=${params.get('max-count')}`,
           `--in-place=${params.get('in-place')}`,
           `--no-base64"`,
@@ -59,7 +71,7 @@ exports.compressBatch = async (directory, params) => {
     ;
 
     const cmd = `BATCH=true npx concurrently ${args}`;
-    // const cmd = `BATCH=false npx concurrently -n "${files.join(',')}" ${args}`;
+    // const cmd = `BATCH=false npx concurrently -n "${images.join(',')}" ${args}`;
     // console.log(cmd);
 
     // console.log('params:', params);
