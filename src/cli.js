@@ -301,10 +301,12 @@ if (!base64CmdExecuting) {
  * @returns {Promise<string>}
  */
 async function resolveFilenameFromEndpoint(endpoint) {
-  if (!isRemoteFile(endpoint) && !inPlace) {
-    // a.png => a-compressed.png
-    // a => a-compressed
-    return endpoint.replace(/(\.\w+)?$/, (m, $1) => `-compressed${$1 || ''}`);
+  if (!isRemoteFile(endpoint)) {
+    return inPlace ?
+      endpoint :
+      // a => a-compressed
+      // a.png => a-compressed.png
+      endpoint.replace(/(\.\w+)?$/, (_m, $1) => `-compressed${$1 || ''}`);
   }
 
   const filename = endpoint.split('/').pop().replace(/\?.*/, '') || endpoint;
