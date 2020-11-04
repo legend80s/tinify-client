@@ -1,19 +1,17 @@
-const { imageToBase64 } = require('../utils/image');
-const { copyBase64 } = require('../utils/copyBase64');
-const { getFileSize } = require('@legend80s/image-to-base64');
-const { base64Usage } = require('../constants');
-const { decorated } = require('../utils/decorated-console');
-const { toReadableSize } = require('../utils/number');
+import { imageToBase64 } from '../utils/image';
+import { copyBase64 } from '../utils/copyBase64';
+import { getFileSize } from '@legend80s/image-to-base64';
+import { BASE64_USAGE } from '../constants';
+import { decorated } from '../utils/decorated-console';
+import { toReadableSize } from '../utils/number';
+import { IParsedArgv } from '../cli';
 
-/**
- * @param {Map<string, any>} options
- */
-exports.executeBase64Command = async options => {
-  const verbose = options.get('verbose');
+export const executeBase64Command = async (options: IParsedArgv) => {
+  const { verbose, _: rest } = options;
 
   verbose && decorated.info('output base64 with options:', options);
 
-  const img = options.get('rest').find(arg => arg !== 'base64');
+  const img = rest.find(arg => arg !== 'base64');
 
   verbose && decorated.info('img:', img);
 
@@ -41,6 +39,6 @@ exports.executeBase64Command = async options => {
       decorated.error(error);
     }
   } else {
-    decorated.warn('image required. Usage: $ ' + base64Usage, '\n');
+    decorated.warn('image required. Usage: $ ' + BASE64_USAGE, '\n');
   }
 }

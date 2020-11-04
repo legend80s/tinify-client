@@ -3,20 +3,20 @@
   "version": "3.1.1",
   "description": "Compress your images not only intelligently but also to the EXTREME using tinify!",
   "files": [
-    "src",
-    "types/index.d.ts"
+    "dist"
   ],
-  "types": "types/index.d.ts",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "bin": {
-    "tinify-client": "src/cli.js",
-    "tinify": "src/cli.js"
+    "tinify-client": "dist/cli.js",
+    "tinify": "dist/cli.js"
   },
   "scripts": {
+    "build": "rm -rf ./dist && time tsc",
+    "dev": "tsc --watch",
     "preversion": "npm run test",
-    "prepublish": "rm -rf types && tsc src/index.js --emitDeclarationOnly --allowJs --declaration --outDir types",
     "test": "jest && npm run test:compress-dir && npm run test:compress-and-base64 && npm run test:compress-no-base64 && npm run test:compress-and-base64",
-    "tinify": "node src/cli",
+    "tinify1": "node dist/cli",
+    "tinify": "ts-node src/cli",
     "test:compress-dir": "npm run tinify -- ./ -c=1 --in-place=true",
     "test:compress-and-base64": "LANG=zh-CN npm run tinify -- https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --max-count=1 -o=./",
     "test:base64": "LANG=zh-CN npm run tinify -- base64 https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ",
@@ -43,18 +43,20 @@
   },
   "dependencies": {
     "@legend80s/image-to-base64": "^1.0.0",
-    "cli-aid": "^4.0.0",
+    "cli-aid": "^5.0.0",
     "clipboardy": "^2.3.0",
     "concurrently": "^5.3.0",
     "fast-glob": "^3.2.4",
     "ora": "^5.0.0",
-    "tinify": "^1.6.0-beta.2"
+    "tinify": "^1.6.0-beta.2",
+    "ts-node": "^9.0.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",
     "git-commit-msg-linter": "^2.4.4",
     "jest": "^26.6.1",
     "tinify-client": "^3.1.1",
+    "ts-jest": "^26.4.3",
     "typescript": "^4.0.5"
   }
 }

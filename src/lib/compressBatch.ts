@@ -1,23 +1,28 @@
-const ora = require('ora');
-const { join } = require('path');
-const { promisify } = require('util');
-const { GREEN, EOS } = require('./constants/colors');
+import { IParsedArgv } from '../cli';
 
-const glob = require('fast-glob');
-const exec = promisify(require('child_process').exec);
+import ora from 'ora';
+import { join } from 'path';
+// import { promisify } from 'util';
+import { GREEN, EOS } from '../constants/colors';
 
-const { i18n } = require('./i18n');
-const { decorated } = require('./utils/decorated-console');
-const { timeToReadable } = require('./utils/lite-lodash');
+import glob from 'fast-glob';
+import tinify from 'tinify';
+// const exec = promisify(require('child_process').exec);
+
+import { i18n } from '../i18n';
+import { decorated } from '../utils/decorated-console';
+import { timeToReadable } from '../utils/lite-lodash';
+import { compress, ITinify } from './compress';
 
 const dictionary = i18n();
 
-/**
- *
- * @param {string} directory
- * @param {Map<string, any>} params
- */
-exports.compressBatch = async (directory, params) => {
+type ICompressBatchOptions = Pick<IParsedArgv, 'verbose' | 'max-count' | 'in-place' | 'output'> & {
+  tinify: ITinify;
+};
+
+export const compressBatch = async (directory: string, params: ICompressBatchOptions) => {
+  const { verbose, "max-count": maxCount, "in-place": inPlace, output } = params;
+
   let milliseconds = 0;
   const spinner = ora(`${dictionary.compressing}... ${timeToReadable(milliseconds)} 🚀`);
   const GAP = 100;
@@ -36,7 +41,6 @@ exports.compressBatch = async (directory, params) => {
   const pattern = `${directory}${separator}**/*.{png,jpg}`;
 
   try {
-    /** @type {string[]} */
     const images = await glob(pattern, {
       ignore: [
         '**/node_modules',
@@ -56,29 +60,39 @@ exports.compressBatch = async (directory, params) => {
 
     spinner.start();
 
-    const cliPath = join(__dirname, './cli');
+    // const cliPath = join(__dirname, './cli');
 
-    const args = images
-      .map(file => {
-        return [
-          `"node ${cliPath} ${file}`,
-          `--max-count=${params.get('max-count')}`,
-          `--in-place=${params.get('in-place')}`,
-          `--no-base64"`,
-        ].join(' ');
-      })
-      .join(' ')
-    ;
+    // const args = images
+    //   .map(file => {
+    //     return [
+    //       `"node ${cliPath} ${file}`,
+    //       `--max-count=${params['max-count']}`,
+    //       `--in-place=${params['in-place']}`,
+    //       `--no-base64"`,
+    //     ].join(' ');
+    //   })
+    //   .join(' ')
+    // ;
 
-    const cmd = `BATCH=true npx concurrently ${args}`;
+    // const cmd = `BATCH=true npx concurrently ${args}`;
     // const cmd = `BATCH=false npx concurrently -n "${images.join(',')}" ${args}`;
     // console.log(cmd);
 
     // console.log('params:', params);
 
-    const { stdout } = await exec(cmd)
+    const results = await Promise.all(images.map(img =>
+      compress(img, {
+        tinify,
+        output,
+        verbose,
+        maxCount,
+        inPlace,
+      })
+    ));
 
-    console.log(stdout);
+    // const { stdout } = await exec(cmd)
+
+    console.table(results);
   } catch (error) {
     decorated.error(error);
 
@@ -92,8 +106,7 @@ exports.compressBatch = async (directory, params) => {
       spinner.clear().succeed(dictionary.compressed + ` ${timeToReadable(milliseconds)} ✨`);
     }
 
-    if (params.get('verbose')) {
-      console.log('sizes:', sizes);
+    if (verbose) {
       // console.log('tmpFiles:', tmpFiles);
       decorated.timeEnd(GREEN + ` ${dictionary.genTotalTimeCostsTips(directory)}` + EOS);
       console.log();

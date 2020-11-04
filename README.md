@@ -57,12 +57,6 @@ npx tinify-client LOCAL_IMG_FOLDER
 npx tinify-client base64 IMG_URL_OR_LOCAL_IMG_PATH
 ```
 
-or install as a global CLI
-
-```sh
-npm install tinify-client@latest --global
-```
-
 ### Configure the key
 
 1. Get your key at https://tinypng.com/developers.
@@ -138,13 +132,6 @@ source ~/.zshrc
 
 ```sh
 npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
-```
-
-或全局安装
-
-```sh
-npm install tinify-client@latest --global
-tinify-client IMG_URL_OR_LOCAL_IMG
 ```
 
 ![tinify-client-demo-zh-CN](https://raw.githubusercontent.com/legend80s/tinify-client/master/assets/demo-zh-CN-compressed.png)

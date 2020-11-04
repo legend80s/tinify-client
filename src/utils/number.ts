@@ -1,16 +1,10 @@
-/**
- *
- * @param {number} before
- * @param {number} after
- * @returns {string}
- */
-exports.getPercentageOff = function getPercentageOff(before, after) {
+export function getPercentageOff(before: number, after: number): string {
   const diff = before - after;
 
   return (diff / before * 100).toFixed(2) + '%';
 }
 
-exports.toReadableSize = function toReadableSize(sizeInByte) {
+export function toReadableSize(sizeInByte: number) {
   if (sizeInByte >= 1024 * 1024) {
     return (sizeInByte / 1024 / 1024).toFixed(2) + 'MB';
   }

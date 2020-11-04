@@ -1,25 +1,9 @@
-const { imageToBase64, getFileSize } = require('@legend80s/image-to-base64');
+export { imageToBase64, getFileSize as getImageSize } from '@legend80s/image-to-base64';
+import { getRequest } from './request';
 
-const { getRequest } = require('./request');
+export const isRemoteFile = (path: string) => /^https?:\/\//.test(path);
 
-
-/**
- * @param {string} path
- */
-const isRemoteFile = (path) => /^https?:\/\//.test(path);
-
-exports.isRemoteFile = isRemoteFile;
-
-exports.getImageSize = getFileSize;
-
-exports.imageToBase64 = imageToBase64;
-
-/**
- *
- * @param {string} url img url
- * @returns {Promise<string>}
- */
-const resolveExtFromRemote = url => {
+export const resolveExtFromRemote = (url: string): Promise<string> => {
   return new Promise(resolve => {
     const req = getRequest(url)
       .get(url, (resp) => {
@@ -31,7 +15,7 @@ const resolveExtFromRemote = url => {
           let ext = '';
 
           if (headers['content-type']) {
-            ext = headers['content-type'].split('/').pop();
+            ext = headers['content-type'].split('/')?.pop() || 'png';
           }
 
           resolve(ext);
@@ -44,7 +28,7 @@ const resolveExtFromRemote = url => {
 
         resolve('');
       })
-      .on('timeout', (error) => {
+      .on('timeout', (error: any) => {
         console.error('HEAD', url, 'timeout:', error);
 
         resolve('');
@@ -53,5 +37,3 @@ const resolveExtFromRemote = url => {
       })
   })
 }
-
-exports.resolveExtFromRemote = resolveExtFromRemote;

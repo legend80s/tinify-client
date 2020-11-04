@@ -1,4 +1,4 @@
-const { isDirectory } = require('../src/utils/lite-fs');
+import { isDirectory } from '../src/utils/lite-fs';
 
 describe('lite-fs', () => {
   it('isDirectory false', () => {

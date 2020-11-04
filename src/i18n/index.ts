@@ -1,9 +1,6 @@
-const enUS = require('./en-US');
-const zhCN = require('./zh-CN');
+import enUS from './en-US';
+import zhCN from './zh-CN';
 
-/**
- * @returns { 'en-US' | 'zh-CN' }
- */
 function getLanguage() {
   const envLang = process.env.LANG;
   const lang = Intl.DateTimeFormat().resolvedOptions().locale;
@@ -11,7 +8,7 @@ function getLanguage() {
   return envLang || lang;
 }
 
-exports.i18n = function i18n(language = '') {
+export function i18n(language = '') {
   const lang = language || getLanguage();
   let dictionary;
 

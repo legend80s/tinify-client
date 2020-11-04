@@ -1,13 +1,13 @@
-const { GREEN, EOS, YELLOW, RED } = require('../constants/colors');
+import { GREEN, EOS, YELLOW, RED } from '../constants/colors';
 
-const timeMarkers = [];
+const timeMarkers: Array<{ label: string; start: number; }> = [];
 
-const decorated = {
-  time: (label) => {
+export const decorated = {
+  time: (label: string) => {
     timeMarkers.push({ label, start: Date.now() });
   },
 
-  timeEnd: (label) => {
+  timeEnd: (label: string) => {
     const index = timeMarkers.findIndex(marker => marker.label === label);
 
     if (index === -1) {
@@ -25,22 +25,19 @@ const decorated = {
     timeMarkers.splice(index, 1);
   },
 
-  success: (...args) => {
+  success: (...args: any[]) => {
     return console.info(`${GREEN}✔ `, ...args, EOS);
   },
 
-  info: (...args) => {
+  info: (...args: any[]) => {
     return console.info(`👀`, ...args, EOS);
   },
 
-  warn: (...args) => {
+  warn: (...args: any[]) => {
     return console.warn(`${YELLOW}⚠️ `, ...args, EOS);
   },
 
-  error: (...args) => {
+  error: (...args: any[]) => {
     return console.error(`${RED}✖ `, ...args, EOS);
   },
 };
-
-
-exports.decorated = decorated;
