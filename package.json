@@ -1,6 +1,6 @@
 {
   "name": "tinify-client",
-  "version": "3.1.1",
+  "version": "4.0.0",
   "description": "Compress your images not only intelligently but also to the EXTREME using tinify!",
   "files": [
     "dist"
