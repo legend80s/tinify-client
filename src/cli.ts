@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import ora from 'ora';
+import { dirname } from 'path';
 import { execSync } from 'child_process';
 
 // @ts-ignore
@@ -29,7 +30,7 @@ import { decorated } from './utils/decorated-console';
 
 import { i18n } from './i18n';
 import { compressBatchWrapper } from './lib/compressBatchWrapper';
-import { compress, DELTA, ICompressResult, ISizeTuple, summarize } from './lib/compress';
+import { compress, DELTA, ICompressResult, summarize } from './lib/compress';
 import tinify from 'tinify';
 
 // console.log('process.argv.slice(2):', process.argv.slice(2));
@@ -146,7 +147,6 @@ async function main() {
   let timer: NodeJS.Timeout;
   let milliseconds = 0;
   let spinner: ora.Ora;
-  const start = Date.now();
 
   if (!batch) {
     console.log();
@@ -214,7 +214,7 @@ async function main() {
 
   report(result);
 
-  open(dest);
+  open(dirname(dest));
 }
 
 function open(path: string) {
