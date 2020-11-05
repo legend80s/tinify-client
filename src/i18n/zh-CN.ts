@@ -9,9 +9,9 @@ export default {
   compressed: '压缩结束',
   compressFailed: '压缩失败',
 
-  summarize: ({ dest, beforeSizeInByte, afterSizeInByte, nTurns, lastTurnDelta, cost }: ISummarizeOptions) => {
+  summarize: ({ dest, beforeSizeInByte, afterSizeInByte, nTurns, lastTurnDelta, costs }: ISummarizeOptions) => {
     // console.table 对中文支持不好，头部会溢出，故统一英文输出
-    return en.summarize({ dest, beforeSizeInByte, afterSizeInByte, nTurns, lastTurnDelta, cost })
+    return en.summarize({ dest, beforeSizeInByte, afterSizeInByte, nTurns, lastTurnDelta, costs })
 
     // const totalBytesOff = beforeSizeInByte - afterSizeInByte;
     // const totalPercentageOff = getPercentageOff(beforeSizeInByte, afterSizeInByte);

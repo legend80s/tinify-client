@@ -8,7 +8,7 @@ export interface ISummarizeOptions {
   afterSizeInByte: number;
   nTurns: number;
   lastTurnDelta: number;
-  cost: number;
+  costs: number;
 }
 
 export default {
@@ -17,7 +17,7 @@ export default {
   compressed: 'Compressed',
   compressFailed: 'Compressed failed',
 
-  summarize: ({ dest, beforeSizeInByte, afterSizeInByte, nTurns, lastTurnDelta, cost }: ISummarizeOptions) => {
+  summarize: ({ dest, beforeSizeInByte, afterSizeInByte, nTurns, lastTurnDelta, costs }: ISummarizeOptions) => {
     const totalBytesOff = beforeSizeInByte - afterSizeInByte;
     const totalPercentageOff = getPercentageOff(beforeSizeInByte, afterSizeInByte);
 
@@ -26,9 +26,9 @@ export default {
       Before: toReadableSize(beforeSizeInByte),
       After: toReadableSize(afterSizeInByte),
       Reduced: `${toReadableSize(totalBytesOff)}, ${totalPercentageOff}`,
-      'Delta In The Last Turn': toReadableSize(lastTurnDelta),
+      'Last Δ': toReadableSize(lastTurnDelta),
       Turns: nTurns,
-      Costs: `${cost}ms`,
+      'Costs (ms)': costs,
     }
 
     // return  [

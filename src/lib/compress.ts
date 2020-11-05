@@ -3,11 +3,15 @@ import tinify from "tinify";
 
 import { isRemoteFile, resolveExtFromRemote } from '@legend80s/image-to-base64';
 
-import { GREEN, EOS, YELLOW, RED } from '../constants/colors';
+import { GREEN, EOS, RED } from '../constants/colors';
 import { getImageSize } from '../utils/image';
 import { isDirectory } from '../utils/lite-fs';
 // import { timeToReadable } from '../utils/lite-lodash';
 import { getPercentageOff } from '../utils/number';
+import { last } from '../utils/lite-lodash';
+import { i18n } from '../i18n';
+
+const dictionary = i18n();
 
 interface IOptions {
   output: string;
@@ -24,13 +28,22 @@ export const DELTA = 1;
 
 export type ISizeTuple = [sizeBefore: number, sizeAfter: number];
 
+export interface ICompressResult {
+  sizes: ISizeTuple[];
+  dest: string;
+  hasCompressedToExtreme: boolean;
+  costs: number,
+}
+
 export async function compress(src: string, {
   tinify,
   output,
   verbose,
   inPlace,
   maxCount,
-}: IOptions): Promise<{ sizes: ISizeTuple[]; dest: string; hasCompressedToExtreme: boolean; }> {
+}: IOptions): Promise<ICompressResult> {
+  const startAt = Date.now();
+
   if (!output) {
     output = await resolveOutput(src, { verbose, inPlace });
   } else if (isDirectory(output)) {
@@ -70,11 +83,11 @@ export async function compress(src: string, {
         console.log(GREEN, `${diff} Bytes reduced in the last turn and it is less than the delta ${DELTA} Bytes. Compressing is ready to abort.`, EOS);
       }
 
-      return { sizes, dest: output, hasCompressedToExtreme: true };
+      return { sizes, dest: output, hasCompressedToExtreme: true, costs: Date.now() - startAt };
     }
   }
 
-  return { sizes, dest: output, hasCompressedToExtreme: false };
+  return { sizes, dest: output, hasCompressedToExtreme: false, costs: Date.now() - startAt };
 }
 
 interface IMinifyOptions {
@@ -175,4 +188,18 @@ async function resolveFilenameFromEndpoint(endpoint: string, { inPlace = false }
   }
 
   return filename;
+}
+
+export function summarize({ dest, sizes, costs }: Pick<ICompressResult, 'dest' | 'sizes' | 'costs'>) {
+  const firstTurn = sizes[0];
+  const lastTurn = last(sizes);
+
+  return dictionary.summarize({
+    dest,
+    beforeSizeInByte: firstTurn[0],
+    afterSizeInByte: lastTurn[1],
+    nTurns: sizes.length,
+    lastTurnDelta: lastTurn[0] - lastTurn[1],
+    costs,
+  })
 }

@@ -6,23 +6,21 @@ import { execSync } from 'child_process';
 // @ts-ignore
 import { CLI } from 'cli-aid';
 
-// if converted to import
-// build error emits 'Cannot find module '../package.json'. Consider using '--resolveJsonModule' to import module with '.json' extension'
-// after resolveJsonModule set and rooDir = src
-// new error emits on build
+// If converted to import
+// build error will emit 'Cannot find module '../package.json'. Consider using '--resolveJsonModule' to import module with '.json' extension'
+// after resolveJsonModule and rooDir set to src in tsconfig.json
+// new error emitted
 // > 'rootDir' is expected to contain all source files.
 // import pkg from '../package.json';
 //
-// so i kept the require 😓 though pkg will typed if in `import` way
-// https://github.com/microsoft/TypeScript/issues/9858
+// so I kept the require way 😓 though pkg will be typed if import in the `import` way
+// Not good solution found in https://github.com/microsoft/TypeScript/issues/9858
 const pkg = require('../package.json');
 
 import { BASE64_USAGE } from './constants';
 import { EOS, GREEN, YELLOW, RED } from './constants/colors';
 
-import { getImageSize, isRemoteFile, imageToBase64 } from './utils/image';
-import { resolveExtFromRemote } from './utils/image';
-import { getPercentageOff } from './utils/number';
+import { imageToBase64 } from './utils/image';
 import { last, timeToReadable } from './utils/lite-lodash';
 import { isDirectory } from './utils/lite-fs';
 import { executeBase64Command } from './commands/executeBase64Command';
@@ -30,8 +28,8 @@ import { copyBase64 } from './utils/copyBase64';
 import { decorated } from './utils/decorated-console';
 
 import { i18n } from './i18n';
-import { compressBatch } from './lib/compressBatch';
-import { compress, DELTA, ISizeTuple } from './lib/compress';
+import { compressBatchWrapper } from './lib/compressBatchWrapper';
+import { compress, DELTA, ICompressResult, ISizeTuple, summarize } from './lib/compress';
 import tinify from 'tinify';
 
 // console.log('process.argv.slice(2):', process.argv.slice(2));
@@ -142,7 +140,7 @@ async function main() {
   tinify.key = key as string;
 
   if (isDirectory(src)) {
-    return await compressBatch(src, { ...params, tinify });
+    return await compressBatchWrapper(src, { ...params, tinify });
   }
 
   let timer: NodeJS.Timeout;
@@ -165,7 +163,7 @@ async function main() {
 
   verbose && console.time(GREEN + ` ${dictionary.genTotalTimeCostsTips(src)}` + EOS);
 
-  let result: { sizes: ISizeTuple[]; hasCompressedToExtreme: boolean; dest: string; };
+  let result: ICompressResult;
 
   try {
     result = await compress(src, {
@@ -196,7 +194,7 @@ async function main() {
     }
   }
 
-    // @ts-ignore
+  // @ts-ignore
   spinner?.succeed(dictionary.compressed + ` ${timeToReadable(milliseconds)} ✨`);
 
   const { sizes, hasCompressedToExtreme, dest } = result;
@@ -214,7 +212,7 @@ async function main() {
     );
   }
 
-  report(dest, sizes, Date.now() - start);
+  report(result);
 
   open(dest);
 }
@@ -233,9 +231,9 @@ if (!base64CmdExecuting) {
   main();
 }
 
-async function report(dest: string, sizes: ISizeTuple[], cost: number) {
+async function report({ dest, sizes, costs }: ICompressResult) {
   console.log();
-  console.table([ summarize(dest, sizes, cost) ]);
+  console.table([ summarize({ dest, sizes, costs }) ]);
   console.log();
 
   if (noBase64) {
@@ -253,19 +251,5 @@ async function report(dest: string, sizes: ISizeTuple[], cost: number) {
   copyBase64(base64, { verbose: verbose || last(sizes)[1] < 1024 });
 
   decorated.success('The compressed image\'s base64 has been copied to your clipboard.');
-}
-
-function summarize(dest: string, sizes: ISizeTuple[], cost: number) {
-  const firstTurn = sizes[0];
-  const lastTurn = last(sizes);
-
-  return dictionary.summarize({
-    dest,
-    beforeSizeInByte: firstTurn[0],
-    afterSizeInByte: lastTurn[1],
-    nTurns: sizes.length,
-    lastTurnDelta: lastTurn[0] - lastTurn[1],
-    cost,
-  })
 }
 
