@@ -144,5 +144,5 @@ LANG=zh-CN node src/cli https://tinypng.com/images/panda-happy.png max-count=1
 ## TODO
 
 - [x] 压缩文件夹下面所有的 png jpg
-- [ ] cli 参数支持多张图片
-- [ ] 压缩单张图片默认打开输出的目录
+- [x] cli 参数支持多张图片
+- [x] 压缩单张图片默认打开输出的目录
