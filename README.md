@@ -19,6 +19,8 @@
 npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
 ```
 
+![tinify-client-demo-en-US](https://raw.githubusercontent.com/legend80s/tinify-client/master/assets/demo-en-US-compressed.png)
+
 - [Features](#features)
 - [Usage](#usage)
   - [1. Configure the key](#1-configure-the-key)
@@ -34,48 +36,39 @@ npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
 ## Features
 
 - Compress not only intelligently but also to the EXTREME!
-- Compress all the images in a folder.
-- Output the input image's base64.
+- Compress images in a batch.
+- Image to base64.
 
 ## Usage
 
 1. compress and output the compressed image's base64
 
-```sh
-npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
-```
+   ```sh
+   npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
+   ```
 
-2. compress all the images in a folder
+2. compress all the pngs and jpgs in a folder
 
-```sh
-npx tinify-client LOCAL_IMG_FOLDER
-```
+   ```sh
+   npx tinify-client DIRECTORY
+   ```
 
-3. image to base64 only (No need to configure key)
+3. image to base64 only (No need to configure the key)
 
-```sh
-npx tinify-client base64 IMG_URL_OR_LOCAL_IMG_PATH
-```
+   ```sh
+   npx tinify-client base64 IMG_URL_OR_LOCAL_IMG_PATH
+   ```
 
 ### Configure the key
 
 1. Get your key at https://tinypng.com/developers.
-2. Then set the key in the CLI params when compressing: `$ tinify-client key=YOUR_API_KEY`。
 
-3. It's recommended to set in your profile. Don't forget to execute the lines below to make your settings active.
+2. Then set the key in the CLI params when compressing: `$ tinify-client key=YOUR_API_KEY`。It's recommended to set in your profile. Don't forget to execute the lines below to make your settings active.
 
    ```sh
    echo TINIFY_KEY=YOUR_API_KEY >> ~/.zshrc
    source ~/.zshrc
    ```
-
-### start compressing
-
-```sh
-tinify-client IMG_URL_OR_LOCAL_IMG_PATH
-```
-
-![tinify-client-demo-en-US](https://raw.githubusercontent.com/legend80s/tinify-client/master/assets/demo-en-US-compressed.png)
 
 ## Documentation
 
@@ -107,7 +100,7 @@ npx tinify-client base64 IMG_URL_OR_LOCAL_IMG_PATH
 
 如果没有开始压缩，请设置 Key
 
-#### 1. 设置 Key
+#### 设置 Key
 
 Key 可从 https://tinypng.com/developers 免费获取，获取过程很简单不要有心理负担。
 
@@ -127,14 +120,6 @@ tinify-client key=YOUR_API_KEY
 echo TINIFY_KEY=YOUR_API_KEY >> ~/.zshrc
 source ~/.zshrc
 ```
-
-#### 2. 开始压缩
-
-```sh
-npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
-```
-
-![tinify-client-demo-zh-CN](https://raw.githubusercontent.com/legend80s/tinify-client/master/assets/demo-zh-CN-compressed.png)
 
 ### 文档
 
