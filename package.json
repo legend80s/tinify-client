@@ -1,6 +1,6 @@
 {
   "name": "tinify-client",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Compress your images not only intelligently but also to the EXTREME using tinify!",
   "files": [
     "dist"
@@ -19,10 +19,8 @@
     "test": "jest && npm run compress:dir && npm run compress:base64 && npm run compress:no-base64 && npm run base64",
     "test:compiled": "npm run compress:multiple:compiled",
     "compress:multiple:compiled": "npm run tinify -- alipay-logo-compressed.png hejiong20200401165556815-compressed.jpg --max-count=1",
-
     "tinify": "node dist/cli",
     "tinify:dev": "ts-node src/cli",
-
     "compress:multiple": "npm run tinify:dev -- alipay-logo-compressed.png hejiong20200401165556815-compressed.jpg --max-count=1",
     "compress:dir": "npm run tinify:dev -- ./ -c=1 --in-place=true",
     "compress:base64": "LANG=zh-CN npm run tinify:dev -- https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --max-count=1 -o=./",
