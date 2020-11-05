@@ -21,7 +21,7 @@ const pkg = require('../package.json');
 import { BASE64_USAGE } from './constants';
 import { EOS, GREEN, YELLOW, RED } from './constants/colors';
 
-import { imageToBase64 } from './utils/image';
+import { imageToBase64, isRemoteFile } from './utils/image';
 import { last, timeToReadable } from './utils/lite-lodash';
 import { isDirectory } from './utils/lite-fs';
 import { executeBase64Command } from './commands/executeBase64Command';
@@ -132,7 +132,7 @@ async function main() {
 
   if (!src) {
     console.log(YELLOW);
-    console.error('src required.\nexample: tinify-client IMG_URL_OR_LOCAL_IMG -o OPTIMIZED_IMG_PATH');
+    console.error('image src required. Example: tinify-client IMG_URL_OR_LOCAL_IMG');
     console.log(EOS);
 
     return;
@@ -142,6 +142,13 @@ async function main() {
 
   if (isDirectory(src)) {
     return await compressBatchWrapper(src, { ...params, tinify });
+  } else {
+    const isImage = (endpoint: string) => /(?:png|jpg)$/.test(endpoint) || isRemoteFile(endpoint);
+    const images = srcList.filter(isImage);
+
+    if (images.length > 1) {
+      return await compressBatchWrapper(images, { ...params, tinify });
+    }
   }
 
   let timer: NodeJS.Timeout;

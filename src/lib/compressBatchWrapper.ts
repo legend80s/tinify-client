@@ -15,7 +15,12 @@ type ICompressBatchOptions = Pick<IParsedArgv, 'verbose' | 'max-count' | 'in-pla
   tinify: ITinify;
 };
 
-export const compressBatchWrapper = async (directory: string, params: ICompressBatchOptions) => {
+/**
+ *
+ * @param directory image directory or images
+ * @param params
+ */
+export async function compressBatchWrapper(directory: string | string[], params: ICompressBatchOptions): Promise<void> {
   const { verbose } = params;
 
   let milliseconds = 0;
@@ -28,20 +33,13 @@ export const compressBatchWrapper = async (directory: string, params: ICompressB
     spinner.text = `${dictionary.compressing}... ${timeToReadable(milliseconds)} 🚀`;
   }, 1 * GAP);
 
-  decorated.time(GREEN + ` ${dictionary.genTotalTimeCostsTips(directory)}` + EOS);
+  verbose && typeof directory === 'string' &&
+    decorated.time(GREEN + ` ${dictionary.genTotalTimeCostsTips(directory)}` + EOS);
 
   let errorMsg = '';
 
-  const separator = directory.endsWith('/') ? '' : '/';
-  const pattern = `${directory}${separator}**/*.{png,jpg}`;
-
   try {
-    const images = await glob(pattern, {
-      ignore: [
-        '**/node_modules',
-      ],
-      onlyFiles: true,
-    });
+    const images = await retrieveImages(directory);
 
     // console.log(`images from glob: ${pattern}`, images);
 
@@ -50,7 +48,12 @@ export const compressBatchWrapper = async (directory: string, params: ICompressB
 
       return;
     } else {
-      decorated.info('Found', images.length, `images in ${directory}`);
+      if (Array.isArray(directory)) {
+        decorated.info('Found', images.length, `images${GREEN}`, directory.join(', '), EOS);
+      } else {
+        decorated.info('Found', images.length, `images in${GREEN}`, directory, EOS);
+      }
+
       console.log();
     }
 
@@ -96,7 +99,7 @@ export const compressBatchWrapper = async (directory: string, params: ICompressB
       spinner.clear().succeed(dictionary.compressed + ` ${timeToReadable(milliseconds)} ✨`);
     }
 
-    if (verbose) {
+    if (verbose && typeof directory === 'string') {
       // console.log('tmpFiles:', tmpFiles);
       decorated.timeEnd(GREEN + ` ${dictionary.genTotalTimeCostsTips(directory)}` + EOS);
       console.log();
@@ -104,4 +107,22 @@ export const compressBatchWrapper = async (directory: string, params: ICompressB
   }
 
   return;
+}
+
+async function retrieveImages(directory: string | string[]): Promise<string[]> {
+  if (Array.isArray(directory)) {
+    return directory;
+  }
+
+  const separator = directory.endsWith('/') ? '' : '/';
+  const pattern = `${directory}${separator}**/*.{png,jpg}`;
+
+  const images = await glob(pattern, {
+    ignore: [
+      '**/node_modules',
+    ],
+    onlyFiles: true,
+  });
+
+  return images;
 }
