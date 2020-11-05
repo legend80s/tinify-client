@@ -41,6 +41,8 @@ npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
 
 ## Usage
 
+For more usage try `npx tinify-client -h`.
+
 1. compress and output the compressed image's base64
 
    ```sh
