@@ -21,10 +21,11 @@
     "compress:multiple:compiled": "npm run tinify -- alipay-logo-compressed.png hejiong20200401165556815-compressed.jpg --max-count=1",
     "tinify": "node dist/cli",
     "tinify:dev": "ts-node src/cli",
+    "test:help": "ts-node src/cli -h",
     "compress:multiple": "npm run tinify:dev -- alipay-logo-compressed.png hejiong20200401165556815-compressed.jpg --max-count=1",
     "compress:dir": "npm run tinify:dev -- ./ -c=1 --in-place=true",
-    "compress:base64": "LANG=zh-CN npm run tinify:dev -- https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --max-count=1 -o=./",
-    "compress:no-base64": "npm run tinify:dev -- https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --output=./alipay-logo.png -no-base64 --max-count=1",
+    "compress:base64": "LANG=zh-CN npm run tinify:dev -- https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --max-count=1 -o=./ --open-dir-after-compressed=false",
+    "compress:no-base64": "npm run tinify:dev -- https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ --output=./alipay-logo.png -no-base64 --max-count=1 --open-dir-after-compressed=false",
     "base64": "LANG=zh-CN npm run tinify:dev -- base64 https://gw.alipayobjects.com/mdn/member_frontWeb/afts/img/A*h7o9Q4g2KiUAAAAAAAAAAABkARQnAQ"
   },
   "keywords": [
