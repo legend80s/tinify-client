@@ -3,7 +3,7 @@
   //   { "path": ["./package.json"] }
   // ],
   // "moduleResolution": "node",
-
+  "include": ["src"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
     // "resolveJsonModule": true,
