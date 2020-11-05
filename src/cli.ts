@@ -49,6 +49,8 @@ export interface IParsedArgv {
   version: string;
   'no-base64': boolean;
   'in-place': boolean;
+  'open-dir-after-compressed': boolean;
+
   _: string[];
 }
 
@@ -62,6 +64,7 @@ const params = new CLI()
   .option('in-place', 'i', { default: false, help: 'Overwrite the original image. Default false' })
   .option('verbose', { default: false, help: 'Show more information about each compressing turn.' })
   .option('no-base64', { default: false, help: 'Not output the base64 of the compressed image. base64 encoded by default.' })
+  .option('open-dir-after-compressed', { default: true, help: 'Should open the compressed image\'s directory after compressed.' })
 
   .option('debug', 'd', { help: 'Show the parsed CLI params.' })
 
@@ -221,7 +224,7 @@ async function main() {
 
   report(result);
 
-  open(dirname(dest));
+  if (params['open-dir-after-compressed']) { open(dirname(dest)); }
 }
 
 function open(path: string) {
