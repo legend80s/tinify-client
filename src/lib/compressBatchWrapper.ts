@@ -59,25 +59,6 @@ export async function compressBatchWrapper(directory: string | string[], params:
 
     spinner.start();
 
-    // const cliPath = join(__dirname, './cli');
-
-    // const args = images
-    //   .map(file => {
-    //     return [
-    //       `"node ${cliPath} ${file}`,
-    //       `--max-count=${params['max-count']}`,
-    //       `--in-place=${params['in-place']}`,
-    //       `--no-base64"`,
-    //     ].join(' ');
-    //   })
-    //   .join(' ')
-    // ;
-
-    // const cmd = `BATCH=true npx concurrently ${args}`;
-    // const cmd = `BATCH=false npx concurrently -n "${images.join(',')}" ${args}`;
-    // console.log(cmd);
-
-    // console.log('params:', params);
     const results = await compressBatch(images, params);
     const beautifulResults = results.map(summarize)
 
