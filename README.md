@@ -11,9 +11,10 @@
 
 <p align="center"><img src="https://tinypng.com/images/panda-happy.png" width="30%" /></p>
 
-> Compress your images not only intelligently but also to the EXTREME!
+> A CLI to compress your images not only intelligently but also to the EXTREME!
 >
-> *Compress using [tinify](https://www.npmjs.com/package/tinify) which is used by [TinyPNG](https://tinypng.com/) and [TinyJPG](https://tinyjpg.com/). Read more at [http://tinify.com](http://tinify.com/).*
+
+Compress using [tinify](https://www.npmjs.com/package/tinify) which is used by [TinyPNG](https://tinypng.com/) and [TinyJPG](https://tinyjpg.com/). Read more at [http://tinify.com](http://tinify.com/).
 
 ```sh
 npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
@@ -23,8 +24,7 @@ npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
 
 - [Features](#features)
 - [Usage](#usage)
-  - [1. Configure the key](#1-configure-the-key)
-  - [2. Compress](#2-compress)
+  - [Configure the key](#1-configure-the-key)
 - [Documentation](#documentation)
 - [中文版文档](#中文版文档)
   - [用法](#用法)
@@ -46,7 +46,7 @@ For more usage try `npx tinify-client -h`.
 1. compress and output the compressed image's base64
 
    ```sh
-   npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
+   npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH_1 [IMG_URL_OR_LOCAL_IMG_PATH_2 [IMG_URL_OR_LOCAL_IMG_PATH_3]]
    ```
 
 2. compress all the pngs and jpgs in a folder
@@ -77,7 +77,7 @@ For more usage try `npx tinify-client -h`.
 More parameters:
 
 - output -o: The compressed img file path.
-- max-count: Set the max compressing turns. Default 15.
+- max-count -m: Set the max compressing turns. Default 15.
 - version: Show the version.
 - verbose: Show more information about each compressing turn.
 - no-base64: Not output the base64 of the compressed image. base64 encoded by default.
@@ -130,7 +130,7 @@ source ~/.zshrc
 - key: tinypng 需要的 key
 - src: 支持 cdn 地址或本地图片
 - output -o: 最终压缩图片的地址
-- max-count: 最大压缩次数，默认 15 次
+- max-count -m: 最大压缩次数，默认 15 次
 - version: 显示该工具的版本号
 - verbose: 显示每一次压缩的日志
 - no-base64: 不显示压缩图片的 base64。默认显示
@@ -141,7 +141,7 @@ source ~/.zshrc
 LANG=zh-CN node src/cli https://tinypng.com/images/panda-happy.png max-count=1
 ```
 
-*CLI Powered by [cli-aid](https://www.npmjs.com/package/cli-aid).*
+*CLI Powered by [cli-aid](https://www.npmjs.com/package/cli-aid). ❤️*
 
 ## TODO
 
