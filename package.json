@@ -1,7 +1,7 @@
 {
   "name": "tinify-client",
   "version": "4.2.0",
-  "description": "Compress your images not only intelligently but also to the EXTREME using tinify!",
+  "description": "A CLI to compress your images not only intelligently but also to the EXTREME!",
   "files": [
     "dist"
   ],
@@ -49,11 +49,11 @@
   },
   "dependencies": {
     "@legend80s/image-to-base64": "^1.0.0",
-    "cli-aid": "^5.0.0",
+    "cli-aid": "^5.1.0",
     "clipboardy": "^2.3.0",
     "fast-glob": "^3.2.4",
     "ora": "^5.0.0",
-    "tinify": "^1.6.0-beta.2",
+    "tinify": "^1.6.0-beta.2"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",
