@@ -18,6 +18,7 @@ interface IOptions {
   verbose: boolean;
   inPlace: boolean;
   maxCount: number;
+  dryRun: boolean;
 
   tinify: ITinify,
 }
@@ -41,6 +42,7 @@ export async function compress(src: string, {
   verbose,
   inPlace,
   maxCount,
+  dryRun,
 }: IOptions): Promise<ICompressResult> {
   const startAt = Date.now();
 
@@ -68,6 +70,10 @@ export async function compress(src: string, {
   const sizes: ISizeTuple[] = [];
 
   let tmpSrc = src;
+
+  if (dryRun) {
+    return { sizes: [[0, 0]], dest: output, hasCompressedToExtreme: false, costs: Date.now() - startAt };
+  }
 
   for (let i = 0; i < maxCount; ++i) {
     // const tmpOutput = output.replace(/(-\d)*.png/, `-${idx+1}.png`);

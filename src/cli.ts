@@ -50,6 +50,7 @@ export interface IParsedArgv {
   'no-base64': boolean;
   'in-place': boolean;
   'open-dir-after-compressed': boolean;
+  'dry-run': boolean;
 
   _: string[];
 }
@@ -64,6 +65,7 @@ const params = new CLI()
   .option('in-place', 'i', { default: false, help: 'Overwrite the original image. Default false' })
   .option('verbose', { default: false, help: 'Show more information about each compressing turn.' })
   .option('no-base64', { default: false, help: 'Not output the base64 of the compressed image. base64 encoded by default.' })
+  .option('dry-run', { default: false, help: 'Does everything compress would do except actually compressing. Reports the details of what would have been compressed' })
   .option('open-dir-after-compressed', { default: true, help: 'Should open the compressed image\'s directory after compressed.' })
 
   .option('debug', 'd', { help: 'Show the parsed CLI params.' })
@@ -91,6 +93,7 @@ const verbose = params.verbose;
 const noBase64 = params['no-base64'];
 const inPlace = params['in-place'];
 const maxCount = params['max-count'];
+const dryRun = params['dry-run'];
 
 const batch = process.env.BATCH === 'true';
 
@@ -182,6 +185,7 @@ async function main() {
       verbose,
       inPlace,
       maxCount,
+      dryRun,
     });
   } catch (error) {
     // @ts-ignore

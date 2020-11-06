@@ -11,7 +11,7 @@ import { compressBatch } from './compressBatch';
 
 const dictionary = i18n();
 
-type ICompressBatchOptions = Pick<IParsedArgv, 'verbose' | 'max-count' | 'in-place' | 'output'> & {
+type ICompressBatchOptions = IParsedArgv & {
   tinify: ITinify;
 };
 
@@ -21,7 +21,7 @@ type ICompressBatchOptions = Pick<IParsedArgv, 'verbose' | 'max-count' | 'in-pla
  * @param params
  */
 export async function compressBatchWrapper(directory: string | string[], params: ICompressBatchOptions): Promise<void> {
-  const { verbose } = params;
+  const { verbose, 'dry-run': dryRun } = params;
 
   let milliseconds = 0;
   const spinner = ora(`${dictionary.compressing}... ${timeToReadable(milliseconds)} 🚀`);
