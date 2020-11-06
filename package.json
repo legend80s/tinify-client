@@ -16,7 +16,7 @@
     "postbuild": "npm run test:compiled",
     "dev": "tsc --watch",
     "preversion": "npm run test",
-    "test": "jest && npm run compress:dir && npm run compress:base64 && npm run compress:no-base64 && npm run base64",
+    "test": "jest && npm run compress:dir:dry-run && npm run compress:base64 && npm run compress:no-base64 && npm run base64",
     "test:compiled": "npm run compress:multiple:compiled",
     "compress:multiple:compiled": "npm run tinify -- alipay-logo-compressed.png hejiong20200401165556815-compressed.jpg --max-count=1",
     "tinify": "node dist/cli",
