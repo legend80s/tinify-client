@@ -72,7 +72,7 @@ export async function compress(src: string, {
   let tmpSrc = src;
 
   if (dryRun) {
-    return { sizes: [[0, 0]], dest: output, hasCompressedToExtreme: false, costs: Date.now() - startAt };
+    return { sizes: new Array(maxCount).fill([0, 0]), dest: output, hasCompressedToExtreme: false, costs: Date.now() - startAt };
   }
 
   for (let i = 0; i < maxCount; ++i) {
