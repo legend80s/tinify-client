@@ -58,7 +58,7 @@ export interface IParsedArgv {
 const params = new CLI()
   .package(pkg)
   .usage('npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH [OPTIONS]')
-  .option('key', { help: 'The Tinify key. Accessible at https://tinypng.com/developers.' })
+  .option('key', 'k', { help: 'The Tinify key. Accessible at https://tinypng.com/developers.' })
   .option('src', { help: 'Image url or local image path to compress.' })
   .option('output', 'o', { help: 'The compressed image file path.' })
   .option('max-count', 'm', { default: 15, help: 'The max compressing turns. Default 15.' })
@@ -144,7 +144,9 @@ async function main() {
     return;
   }
 
-  tinify.key = key as string;
+  verbose && console.log('key:', key);
+
+  tinify.key = key!;
 
   if (isDirectory(src)) {
     return await compressBatchWrapper(src, { ...params, tinify });
