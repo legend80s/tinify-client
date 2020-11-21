@@ -43,12 +43,9 @@
     "url": "git+https://github.com/legend80s/tinify-client.git"
   },
   "license": "MIT",
-  "tnpm": {
-    "mode": "yarn"
-  },
   "dependencies": {
     "@legend80s/image-to-base64": "^1.0.0",
-    "cli-aid": "^6.1.0",
+    "cli-aid": "^6.2.0",
     "clipboardy": "^2.3.0",
     "fast-glob": "^3.2.4",
     "ora": "^5.0.0",
