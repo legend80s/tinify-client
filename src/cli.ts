@@ -18,7 +18,7 @@ import { CLI } from 'cli-aid';
 // Not good solution found in https://github.com/microsoft/TypeScript/issues/9858
 const pkg = require('../package.json');
 
-import { BASE64_USAGE } from './constants';
+import { BASE64_USAGE, configFile, USAGE_SET_KEY } from './constants';
 import { EOS, GREEN, YELLOW, RED } from './constants/colors';
 
 import { imageToBase64, isRemoteFile } from './utils/image';
@@ -32,11 +32,13 @@ import { i18n } from './i18n';
 import { compressBatchWrapper } from './lib/compressBatchWrapper';
 import { compress, DELTA, ICompressResult, summarize } from './lib/compress';
 import tinify from 'tinify';
+import { setKey } from './commands/setKey';
+import { chalk } from './utils/colorize';
 
 // console.log('process.argv.slice(2):', process.argv.slice(2));
 // process.exit(0)
 
-let base64CmdExecuting = false;
+let cmdExecuting = false;
 
 export interface IParsedArgv {
   debug: boolean;
@@ -51,6 +53,7 @@ export interface IParsedArgv {
   'in-place': boolean;
   'open-dir-after-compressed': boolean;
   'dry-run': boolean;
+  'show-quota': boolean;
 
   _: string[];
 }
@@ -69,16 +72,34 @@ const params = new CLI()
   .option('open-dir-after-compressed', { default: true, help: 'Should open the compressed image\'s directory after compressed.' })
 
   .option('debug', 'd', { help: 'Show the parsed CLI params.' })
+  .option('show-quota', 'quota', 'q', { help: 'Show compressions you have made this month.' })
 
   .command('base64', {
     usage: BASE64_USAGE,
     help: 'Output base64-encoded string of the input image.',
   }, async (options: IParsedArgv) => {
-    base64CmdExecuting = true;
+    cmdExecuting = true;
 
-    await executeBase64Command(options);
+    try {
+      await executeBase64Command(options);
+    } finally {
+      process.exit(0);
+    }
+  })
 
-    process.exit(0);
+  .command('set-key', {
+    usage: USAGE_SET_KEY,
+    help: 'Output base64-encoded string of the input image.',
+  }, async (options: IParsedArgv) => {
+    cmdExecuting = true;
+
+    try {
+      await setKey(options);
+    } catch (error) {
+      console.error('setKey failed', error);
+    } finally {
+      process.exit(0);
+    }
   })
 
   .parse(process.argv.slice(2)) as IParsedArgv;
@@ -94,6 +115,7 @@ const noBase64 = params['no-base64'];
 const inPlace = params['in-place'];
 const maxCount = params['max-count'];
 const dryRun = params['dry-run'];
+const shouldShowQuota = params['show-quota'];
 
 const batch = process.env.BATCH === 'true';
 
@@ -111,25 +133,32 @@ const dictionary = i18n();
 async function main() {
   const keyFromCli = params.key;
   const TINIFY_KEY = process.env.TINIFY_KEY;
-  const key = keyFromCli || TINIFY_KEY;
+  let key = keyFromCli || (TINIFY_KEY && TINIFY_KEY.length > 1 ? TINIFY_KEY : '');
 
-  if (key || base64CmdExecuting) {
+  if (key || cmdExecuting) {
     // no need to check the key
   } else {
-    console.error(YELLOW, 'key required. Get your key at', `${GREEN}https://tinypng.com/developers`, EOS);
+    try {
+      const config: { key: string } = require(configFile);
 
-    console.log(YELLOW);
+      key = config.key;
+    } catch (error) {
+      // do nothing
+    }
 
-    console.log(` You can set key in the CLI params: $ ${GREEN}tinify-client IMG_URL_OR_LOCAL_IMG key=YOUR_API_KEY -o OPTIMIZED_IMG_PATH`);
-    console.log(YELLOW);
-    console.log(` Or append \`${GREEN}export TINIFY_KEY=YOUR_API_KEY\`${YELLOW} to your profile (~/.zshrc or ~/.bash_profile, etc.), then:`, '\n');
+    if (!key) {
+      printHowToGetKey();
 
-    console.log(' ```sh');
-    console.log(`${GREEN} source ~/.zshrc`);
-    console.log(' tinify-client IMG_URL_OR_LOCAL_IMG -o OPTIMIZED_IMG_PATH', YELLOW);
-    console.log(' ```');
+      return;
+    }
+  }
 
-    console.log(EOS);
+  verbose && console.log('key:', key);
+
+  tinify.key = key;
+
+  if (shouldShowQuota) {
+    await showQuota(tinify);
 
     return;
   }
@@ -143,10 +172,6 @@ async function main() {
 
     return;
   }
-
-  verbose && console.log('key:', key);
-
-  tinify.key = key!;
 
   if (isDirectory(src)) {
     return await compressBatchWrapper(src, { ...params, tinify });
@@ -224,7 +249,8 @@ async function main() {
       YELLOW,
       `${lastDiff} Bytes reduced in the last turn though it's no less than the delta ${DELTA} Bytes,`,
       `but the loop has reached it's limit ${maxCount}.`,
-      'Compress Aborted.'
+      'Compress Aborted.',
+      EOS,
     );
   }
 
@@ -243,12 +269,12 @@ function open(path: string) {
 
 // console.log('base64CmdExecuting:', base64CmdExecuting);
 
-if (!base64CmdExecuting) {
+if (!cmdExecuting) {
   main();
 }
 
 async function report({ dest, sizes, costs }: ICompressResult) {
-  console.log();
+  console.log(YELLOW);
   console.table([ summarize({ dest, sizes, costs }) ]);
   console.log();
 
@@ -269,3 +295,41 @@ async function report({ dest, sizes, costs }: ICompressResult) {
   decorated.success('The compressed image\'s base64 has been copied to your clipboard.');
 }
 
+async function showQuota(tinifyWithKey: typeof tinify) {
+  try {
+    await tinifyWithKey.validate();
+  } catch (error) {
+    console.error('show quota failed:', error);
+
+    return;
+  }
+
+  const compressionsThisMonth = tinifyWithKey.compressionCount || 0;
+
+  console.log();
+  console.log(
+    chalk.green('Quota is'), 500, chalk.green('per month. Compressions you have made this month:'),
+    compressionsThisMonth,
+    ',',
+    500 - compressionsThisMonth,
+    'left',
+  );
+
+  console.log(chalk.italic('Read more at https://tinypng.com/developers'));
+  console.log();
+
+  return;
+}
+
+function printHowToGetKey() {
+  console.error(`${YELLOW}key required. Get your key at`, `${GREEN}https://tinypng.com/developers${EOS}\n`);
+
+  console.log('Then run the one line code below to set it\n');
+  console.log('```sh');
+  console.log(chalk.green(USAGE_SET_KEY));
+  console.log('```');
+
+  console.log();
+  console.log(`Or set key in the cli params for once: $ ${GREEN}tinify --key YOUR_API_KEY IMG_URL_OR_LOCAL_IMG`);
+  console.log(EOS);
+}

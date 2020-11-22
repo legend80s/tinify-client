@@ -4,6 +4,7 @@ const RED = '\x1b[0;31m';
 const EOS = '\x1b[0m';
 const BOLD = '\x1b[1m';
 const UNDERLINED = '\x1b[4m';
+const ITALIC = '\x1b[3m';
 
 export {
   GREEN,
@@ -12,6 +13,7 @@ export {
   BOLD,
 
   UNDERLINED,
+  ITALIC,
 
   EOS,
 };

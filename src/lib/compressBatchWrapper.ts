@@ -3,7 +3,7 @@ import ora from 'ora';
 
 import { i18n } from '../i18n';
 import { IParsedArgv } from '../cli';
-import { GREEN, EOS } from '../constants/colors';
+import { GREEN, EOS, YELLOW } from '../constants/colors';
 import { decorated } from '../utils/decorated-console';
 import { timeToReadable } from '../utils/lite-lodash';
 import { ITinify, summarize } from './compress';
@@ -63,7 +63,7 @@ export async function compressBatchWrapper(directory: string | string[], params:
     const beautifulResults = results.map(summarize)
 
     setTimeout(() => {
-      console.log();
+      console.log(YELLOW);
       console.table(beautifulResults);
       console.log();
     });
