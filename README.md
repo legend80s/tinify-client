@@ -109,7 +109,7 @@ For more usage try `npx tinify-client -h`.
 
 ## Documentation
 
-More parameters ``tinify -h`:
+More parameters `tinify -h`:
 
 - output -o: The compressed img file path.
 - max-count -m: Set the max compressing turns. Default 15.
