@@ -26,11 +26,11 @@ npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH
   - [用法](#用法)
     - [设置 Key](#设置-key)
   - [文档](#文档)
-- [Development](#development)
 - [Features](#features)
 - [Usage](#usage)
   - [Configure the key](#1-configure-the-key)
 - [Documentation](#documentation)
+- [Development](#development)
 
 ## 中文版文档
 
