@@ -276,7 +276,7 @@ if (!cmdExecuting) {
 async function report({ dest, sizes, costs }: ICompressResult) {
   console.log(YELLOW);
   console.table([ summarize({ dest, sizes, costs }) ]);
-  console.log();
+  console.log(EOS);
 
   if (noBase64) {
     return;
