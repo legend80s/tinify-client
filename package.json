@@ -1,6 +1,6 @@
 {
   "name": "tinify-client",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "A CLI to compress your images not only intelligently but also to the EXTREME!",
   "files": [
     "dist"
