@@ -25,7 +25,7 @@ export default {
       Where: dest,
       Before: toReadableSize(beforeSizeInByte),
       After: toReadableSize(afterSizeInByte),
-      Reduced: `${toReadableSize(totalBytesOff)}, ${totalPercentageOff}`,
+      Reduced: `${toReadableSize(totalBytesOff)} ${totalPercentageOff}`,
       'Last Δ': toReadableSize(lastTurnDelta),
       Turns: nTurns,
       'Costs (ms)': costs,
