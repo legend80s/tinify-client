@@ -65,12 +65,7 @@ For more usage try `npx tinify-client -h`.
 
 1. Get your key at https://tinypng.com/developers.
 
-2. Then set the key in the CLI params when compressing: `$ tinify-client key=YOUR_API_KEY`。It's recommended to set in your profile. Don't forget to execute the lines below to make your settings active.
-
-   ```sh
-   echo TINIFY_KEY=YOUR_API_KEY >> ~/.zshrc
-   source ~/.zshrc
-   ```
+2. `tinify set-key YOUR_TINIFY_KEY`
 
 ## Documentation
 
@@ -111,17 +106,10 @@ Key 可从 https://tinypng.com/developers 免费获取，获取过程很简单�
 方法 1：命令行参数
 
 ```sh
-tinify-client key=YOUR_API_KEY
+tinify-client key=YOUR_API_KEY IMG_URL_OR_LOCAL_IMG_PATH
 ```
 
-方法 2：推荐通过 profile 文件设置 key
-
-将 `export TINIFY_KEY=YOUR_API_KEY` 添加到 profile 文件（~/.zshrc 或 ~/.bash_profile, etc.）最后一行，别忘了执行
-
-```sh
-echo TINIFY_KEY=YOUR_API_KEY >> ~/.zshrc
-source ~/.zshrc
-```
+方法 2：推荐一行代码设置 `tinify set-key YOUR_TINIFY_KEY`。
 
 ### 文档
 
