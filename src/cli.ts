@@ -307,16 +307,16 @@ async function showQuota(tinifyWithKey: typeof tinify) {
   const compressionsThisMonth = tinifyWithKey.compressionCount || 0;
 
   console.log();
-  console.log(
-    chalk.green('Quota is'), 500, chalk.green('per month. Compressions you have made this month:'),
-    compressionsThisMonth,
-    ',',
-    500 - compressionsThisMonth,
-    'left',
-  );
+  console.table([
+    {
+      'Compressions Made This Month': compressionsThisMonth,
+      'Quota Per Month': 500,
+      'Left': 500 - compressionsThisMonth,
+    }
+  ]);
 
   console.log(chalk.italic('Read more at https://tinypng.com/developers'));
-  console.log();
+  console.log(EOS);
 
   return;
 }
