@@ -60,7 +60,7 @@ export interface IParsedArgv {
 
 const params = new CLI()
   .package(pkg)
-  .usage('npx tinify-client IMG_URL_OR_LOCAL_IMG_PATH [OPTIONS]')
+  .usage('npx tinify-client <IMG_URL_OR_LOCAL_IMG_PATH> [OPTIONS]')
   .option('key', 'k', { help: 'The Tinify key. Accessible at https://tinypng.com/developers.' })
   .option('src', { help: 'Image url or local image path to compress.' })
   .option('output', 'o', { help: 'The compressed image file path.' })
