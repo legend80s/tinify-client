@@ -7,6 +7,7 @@
   <a href="https://github.com/legend80s/tinify-client">
     <img src="https://img.shields.io/npm/dm/tinify-client.svg" alt="npm downloads monthly" />
   </a>
+  <img src="https://visitor-badge.glitch.me/badge?page_id=legend80s/tinify-client&left_color=blue&right_color=green" alt="visitor count" />
 </p>
 
 <p align="center"><img src="https://tinypng.com/images/panda-happy.png" width="30%" /></p>
